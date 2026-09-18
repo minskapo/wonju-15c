@@ -1,0 +1,2594 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme-support>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>1.5℃ 라이프스타일 2주 살기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EDF0EA;
+  --paper-2:#E3E8DF;
+  --card:#F7F9F5;
+  --ink:#14302B;
+  --ink-2:#3C544E;
+  --ink-3:#6E837D;
+  --rule:#C9D2C6;
+  --rule-2:#DCE2D8;
+  --over:#9E2A3B;
+  --over-soft:#E8D3D6;
+  --within:#2F6F55;
+  --within-soft:#CFE0D6;
+  --sand:#D8D2C0;
+  --focus:#1B5E7A;
+  --s-food:#4E7B4B; --s-consumption:#9A7B3F; --s-transport:#2F5E78;
+  --s-housing:#7A4A5C; --s-leisure:#5E6B6E;
+
+  --f: "IBM Plex Sans KR", system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --maxw: 640px;
+  --pad: 22px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#101A18;
+    --paper-2:#16211F;
+    --card:#172320;
+    --ink:#E4EBE5;
+    --ink-2:#AFC0B9;
+    --ink-3:#7E918B;
+    --rule:#2C3C38;
+    --rule-2:#223230;
+    --over:#E4788A;
+    --over-soft:#3A2329;
+    --within:#6FC49B;
+    --within-soft:#1E3A2E;
+    --sand:#3A392F;
+    --focus:#7FC5E0;
+    --s-food:#79AE73; --s-consumption:#CBA65F; --s-transport:#6699BB;
+    --s-housing:#B5818F; --s-leisure:#8FA0A3;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#101A18; --paper-2:#16211F; --card:#172320;
+  --ink:#E4EBE5; --ink-2:#AFC0B9; --ink-3:#7E918B;
+  --rule:#2C3C38; --rule-2:#223230;
+  --over:#E4788A; --over-soft:#3A2329;
+  --within:#6FC49B; --within-soft:#1E3A2E;
+  --sand:#3A392F; --focus:#7FC5E0;
+  --s-food:#79AE73; --s-consumption:#CBA65F; --s-transport:#6699BB;
+  --s-housing:#B5818F; --s-leisure:#8FA0A3;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f);
+  font-weight:400;
+  font-size:16px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+  word-break:keep-all;
+  overflow-wrap:anywhere;
+}
+button{font-family:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:3px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- shell ---------- */
+.shell{max-width:var(--maxw);margin:0 auto;padding:0 var(--pad) 120px}
+.rail{
+  position:sticky;top:0;z-index:40;
+  background:color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--rule-2);
+  margin:0 calc(-1 * var(--pad)) 0;
+  padding:12px var(--pad) 11px;
+}
+.rail-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.rail-stage{font-size:13px;font-weight:500;letter-spacing:-.01em}
+.rail-count{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
+.rail-ticks{display:flex;gap:3px;margin-top:9px}
+.rail-ticks i{flex:1;height:3px;background:var(--rule);border-radius:2px}
+.rail-ticks i.on{background:var(--ink)}
+.rail-ticks i.now{background:var(--over)}
+
+.screen{display:none;padding-top:38px;animation:rise .34s ease both}
+.screen.live{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* ---------- type ---------- */
+h1{font-size:30px;line-height:1.38;font-weight:600;letter-spacing:-.025em;margin:0 0 18px}
+h2{font-size:23px;line-height:1.45;font-weight:600;letter-spacing:-.02em;margin:0 0 14px}
+h3{font-size:16px;font-weight:600;letter-spacing:-.01em;margin:0 0 8px}
+p{margin:0 0 15px;max-width:60ch}
+.lede{font-size:17px;color:var(--ink-2);line-height:1.8}
+.muted{color:var(--ink-3);font-size:14px;line-height:1.7}
+.kicker{font-size:13px;color:var(--ink-3);margin:0 0 10px;font-weight:500}
+.num{font-variant-numeric:tabular-nums;letter-spacing:-.04em;font-weight:200}
+.hr{height:1px;background:var(--rule-2);border:0;margin:34px 0}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  width:100%;padding:16px 20px;border:0;border-radius:3px;
+  background:var(--ink);color:var(--paper);
+  font-size:16px;font-weight:600;letter-spacing:-.01em;cursor:pointer;
+  transition:opacity .15s;
+}
+.btn:hover{opacity:.87}
+.btn:disabled{opacity:.3;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--rule)}
+.btn.small{width:auto;padding:10px 16px;font-size:14px}
+.btn-row{display:flex;gap:10px;margin-top:26px}
+.btn-row .btn{flex:1}
+.linkish{background:none;border:0;padding:0;font-size:14px;color:var(--ink-2);
+  text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--rule);cursor:pointer}
+
+/* ---------- number blocks ---------- */
+.stat{padding:20px 0;border-top:1px solid var(--rule-2)}
+.stat:last-child{border-bottom:1px solid var(--rule-2)}
+.stat-label{font-size:13.5px;color:var(--ink-3);margin-bottom:2px}
+.stat-val{display:flex;align-items:baseline;gap:8px}
+.stat-val b{font-size:42px;font-weight:200;letter-spacing:-.045em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat-val span{font-size:13px;color:var(--ink-3)}
+.stat.hero .stat-val b{font-size:74px}
+.stat.mark-over .stat-val b{color:var(--over)}
+.stat.mark-within .stat-val b{color:var(--within)}
+
+.card{background:var(--card);border:1px solid var(--rule-2);border-radius:4px;padding:20px}
+.note{border-left:2px solid var(--rule);padding:2px 0 2px 16px;color:var(--ink-2);font-size:15px;line-height:1.75}
+
+/* ---------- budget line ---------- */
+.bl{margin:26px 0 8px}
+.bl-labels{position:relative;height:22px}
+.bl-labels span{position:absolute;white-space:nowrap}
+.bl-above{margin-bottom:2px}
+.bl-below{margin-top:6px;height:20px}
+.bl-tag{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+.bl-tag.is-over{color:var(--over)}
+.bl-tag.is-within{color:var(--within)}
+.bl-tag.dim{font-weight:400;color:var(--ink-3)}
+.bl-track{position:relative;height:16px;background:var(--rule-2);border-radius:2px}
+.bl-track .fill{position:absolute;top:0;height:100%;display:block}
+.bl-track .fill.within{left:0;background:var(--within);border-radius:2px 0 0 2px}
+.bl-track .fill.over{background:var(--over);border-radius:0 2px 2px 0}
+.bl-track .tick-lim{position:absolute;top:-7px;bottom:-7px;width:2px;background:var(--ink);border-radius:1px}
+.bl-track .tick-k{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--ink-3);opacity:.6}
+.bl-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:16px;font-size:12.5px;color:var(--ink-3)}
+.bl-legend b{font-weight:500;color:var(--ink-2)}
+.swatch{display:inline-block;width:9px;height:9px;border-radius:1px;margin-right:6px;vertical-align:baseline}
+
+/* ---------- wizard ---------- */
+.q{margin:0 0 30px}
+.q-title{font-size:16.5px;font-weight:600;line-height:1.55;margin:0 0 4px;letter-spacing:-.012em}
+.q-help{font-size:13.5px;color:var(--ink-3);margin:0 0 12px}
+.opts{display:grid;gap:7px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{
+  text-align:left;background:var(--card);border:1px solid var(--rule-2);
+  border-radius:3px;padding:13px 15px;font-size:15px;cursor:pointer;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  transition:border-color .12s, background .12s;
+}
+.opt:hover{border-color:var(--rule)}
+.opt[aria-pressed="true"]{border-color:var(--ink);background:var(--paper-2);font-weight:500}
+.opt em{font-style:normal;font-size:12px;color:var(--ink-3)}
+.sect-head{display:flex;align-items:baseline;gap:10px;margin-bottom:26px}
+.sect-head h2{margin:0}
+.dots{display:flex;gap:5px;align-items:center}
+.dots i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
+.dots i.on{background:var(--ink)}
+
+/* ---------- breakdown ---------- */
+.brk{display:grid;gap:11px;margin-top:22px}
+.brk-row{display:grid;grid-template-columns:58px 1fr 92px;gap:10px;align-items:center;font-size:14px}
+.brk-bar{height:14px;background:var(--rule-2);border-radius:2px;overflow:hidden}
+.brk-bar i{display:block;height:100%;border-radius:2px}
+.brk-num{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:13px;white-space:nowrap}
+.donut-wrap{display:flex;gap:24px;align-items:center;flex-wrap:wrap}
+.donut-wrap>div{flex:1;min-width:250px}
+
+/* ---------- action picker ---------- */
+.act{
+  display:block;width:100%;text-align:left;background:var(--card);
+  border:1px solid var(--rule-2);border-radius:4px;padding:15px 16px;margin-bottom:9px;cursor:pointer;
+  transition:border-color .12s, background .12s;
+}
+.act:hover{border-color:var(--rule)}
+.act[aria-pressed="true"]{border-color:var(--ink);background:var(--paper-2)}
+.act-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.act-name{font-size:15.5px;font-weight:600;letter-spacing:-.012em;line-height:1.45}
+.act-desc{font-size:13.5px;color:var(--ink-3);margin-top:3px;line-height:1.6}
+.tag{flex:none;font-size:11.5px;padding:3px 8px;border-radius:2px;background:var(--paper-2);
+  color:var(--ink-2);border:1px solid var(--rule-2);white-space:nowrap;line-height:1.5}
+.tag.hi{background:var(--over-soft);border-color:transparent;color:var(--over);font-weight:600}
+.tag.mid{background:var(--sand);border-color:transparent;color:var(--ink-2);font-weight:500}
+.pickbar{
+  position:sticky;bottom:0;background:color-mix(in srgb, var(--paper) 92%, transparent);
+  backdrop-filter:blur(8px);border-top:1px solid var(--rule-2);
+  margin:24px calc(-1*var(--pad)) 0;padding:14px var(--pad) 18px;
+}
+.pickbar .cnt{font-size:13px;color:var(--ink-3);margin-bottom:9px}
+
+/* ---------- log ---------- */
+.daybar{display:flex;gap:4px;margin:0 0 22px;overflow-x:auto;padding-bottom:4px}
+.daybar button{
+  flex:none;width:34px;height:40px;border-radius:3px;border:1px solid var(--rule-2);
+  background:var(--card);font-size:12px;font-variant-numeric:tabular-nums;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink-3)
+}
+.daybar button.done{border-color:transparent;background:var(--within-soft);color:var(--within);font-weight:600}
+.daybar button.cur{border-color:var(--ink);color:var(--ink);font-weight:600}
+.daybar button.mid{width:48px;font-size:10px;line-height:1.25;border-color:transparent;
+  background:var(--ink);color:var(--paper);font-weight:600;margin:0 3px}
+.daybar button.mid:hover{opacity:.85}
+.midbanner{display:flex;align-items:center;gap:10px;width:100%;text-align:left;cursor:pointer;
+  background:var(--paper-2);border:1px solid var(--ink);border-radius:4px;
+  padding:14px 16px;margin-bottom:18px}
+.midbanner:hover{background:var(--card)}
+.midbanner-t{font-size:15px;font-weight:600;letter-spacing:-.012em}
+.midbanner-s{flex:1;font-size:12.5px;color:var(--ink-3);line-height:1.5}
+.midbanner-a{font-size:16px;color:var(--ink-2)}
+@media (max-width:420px){.midbanner{flex-wrap:wrap}.midbanner-s{flex-basis:100%}}
+.daybar button i{width:4px;height:4px;border-radius:50%;background:currentColor;opacity:.55}
+.logblock{border-top:1px solid var(--rule-2);padding:20px 0 4px}
+.logblock h3{display:flex;align-items:baseline;gap:8px}
+.logblock h3 em{font-style:normal;font-size:12px;color:var(--ink-3);font-weight:400}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{background:var(--card);border:1px solid var(--rule-2);border-radius:20px;
+  padding:7px 13px;font-size:13.5px;cursor:pointer;transition:border-color .12s,background .12s}
+.chip:hover{border-color:var(--rule)}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--paper-2);font-weight:500}
+.saved{font-size:13px;color:var(--within);margin-top:10px;min-height:20px}
+
+/* ---------- change table ---------- */
+.chg{display:grid;gap:0;margin:18px 0 8px}
+.chg-row{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:baseline;
+  padding:13px 0;border-top:1px solid var(--rule-2)}
+.chg-row:last-child{border-bottom:1px solid var(--rule-2)}
+.chg-name{font-size:14.5px}
+.chg-val{font-variant-numeric:tabular-nums;font-size:15px;white-space:nowrap}
+.chg-val s{color:var(--ink-3);text-decoration-color:var(--ink-3)}
+.chg-val b{font-weight:600}
+.chg-val .dn{color:var(--within)}
+
+/* ---------- path ---------- */
+.path{margin:22px 0}
+.path-row{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:baseline;padding:14px 0;border-top:1px solid var(--rule-2)}
+.path-row:last-child{border-bottom:1px solid var(--rule-2)}
+.path-row b{font-size:26px;font-weight:200;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.path-arrow{color:var(--ink-3);font-size:13px;padding:6px 0 0 2px}
+
+/* ---------- barriers ---------- */
+.bar-item{padding:15px 0;border-top:1px solid var(--rule-2)}
+.bar-item:last-child{border-bottom:1px solid var(--rule-2)}
+.bar-q{font-size:14.5px;color:var(--ink-2)}
+.bar-a{font-size:15.5px;font-weight:600;margin-top:4px;letter-spacing:-.012em}
+.bar-a span{font-weight:400;color:var(--ink-3);font-size:13px;margin-left:6px}
+
+.resultimg{display:block;width:100%;height:auto;margin-top:16px;border:1px solid var(--rule);border-radius:4px}
+
+/* ---------- 최종 결과 화면: 숫자 강조 ---------- */
+.bold-nums .stat-val b{font-weight:500;letter-spacing:-.03em}
+.bold-nums .pc-val{font-weight:600}
+.bold-nums .chg-val b{font-weight:700}
+.bold-nums h2{font-weight:700}
+
+.btn.bigsecondary{flex-direction:column;gap:3px;background:var(--paper-2);color:var(--ink);
+  border:1.5px solid var(--ink);padding:18px 20px;margin-top:10px}
+.btn.bigsecondary:hover{background:var(--card);opacity:1}
+.bs-t{font-size:17px;font-weight:600;letter-spacing:-.015em}
+.bs-s{font-size:12.5px;font-weight:400;color:var(--ink-3)}
+
+/* ---------- 비교 스케일 (1.5℃ 한계선 한 축) ---------- */
+.cscale{margin:30px 0 8px}
+.cs-labels{position:relative;height:24px}
+.cs-labels span{position:absolute;white-space:nowrap}
+.cs-above{margin-bottom:4px}
+.cs-below{margin-top:8px}
+.cs-tag{font-size:13px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:-.01em;color:var(--ink)}
+.cs-tag.dim{font-weight:500;color:var(--ink-2)}
+.cs-tag.isover{color:var(--over)}
+.cs-track{position:relative;height:26px;background:var(--rule-2);border-radius:3px}
+.cs-fill{position:absolute;top:0;height:100%;display:block}
+.cs-fill.within{left:0;background:var(--within);border-radius:3px 0 0 3px}
+.cs-fill.over{background:var(--over);border-radius:0 3px 3px 0}
+.cs-rule{position:absolute;top:-9px;bottom:-9px;width:3px;background:var(--ink);border-radius:2px;z-index:2}
+.cs-dot{position:absolute;top:50%;width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;
+  background:var(--paper);border:2.5px solid var(--ink-2);z-index:3}
+
+/* ---------- 입력 검증 ---------- */
+.fieldmsg{font-size:12.5px;color:var(--ink-3);margin:7px 0 0}
+.fieldmsg.bad{color:var(--over)}
+.field input.bad{border-color:var(--over)}
+.selin{width:100%;background:var(--card);border:1px solid var(--rule);border-radius:3px;
+  padding:13px 14px;font-family:var(--f);font-size:16px;color:var(--ink);appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),
+    linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);
+  background-position:calc(100% - 19px) calc(50% + 2px),calc(100% - 14px) calc(50% + 2px);
+  background-size:5px 5px,5px 5px;background-repeat:no-repeat}
+.selin:focus{border-color:var(--ink);outline:none}
+
+/* ---------- 숫자 입력 ---------- */
+.numrow{display:flex;align-items:center;gap:8px}
+.numrow.tight{gap:5px}
+.numbtn{width:42px;height:46px;flex:none;border:1px solid var(--rule);background:var(--card);
+  border-radius:3px;font-size:20px;line-height:1;cursor:pointer;color:var(--ink)}
+.numrow.tight .numbtn{width:34px;height:36px;font-size:17px}
+.numbtn:hover{border-color:var(--ink)}
+.numin{flex:1;min-width:0;height:46px;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;text-align:center;font-family:var(--f);font-size:18px;font-variant-numeric:tabular-nums;
+  color:var(--ink);-moz-appearance:textfield}
+.numin.small{width:58px;flex:none;height:36px;font-size:15px}
+.numin::-webkit-outer-spin-button,.numin::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.numin:focus{border-color:var(--ink);outline:none}
+.numunit{flex:none;font-size:14px;color:var(--ink-3);min-width:26px}
+.countlist{display:grid;gap:8px}
+.countrow{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:7px 0;border-top:1px solid var(--rule-2);font-size:15px}
+.countrow:last-child{border-bottom:1px solid var(--rule-2)}
+.chip.locked{opacity:.4}
+
+/* ---------- 경고 / 입력 / 경로차트 ---------- */
+.warn{background:var(--over-soft);color:var(--over);font-size:13.5px;font-weight:500;
+  padding:10px 14px;border-radius:3px;line-height:1.6}
+.act.locked{opacity:.45}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:14px;font-weight:500;margin-bottom:7px}
+.field label em{font-style:normal;font-weight:400;color:var(--ink-3);font-size:12.5px}
+.field input,.freetext{width:100%;scroll-margin-block:90px;background:var(--card);border:1px solid var(--rule);
+  border-radius:3px;padding:13px 14px;font-family:var(--f);font-size:16px;color:var(--ink);line-height:1.6}
+.field input:focus,.freetext:focus{border-color:var(--ink);outline:none}
+.freetext{resize:vertical;min-height:80px}
+.freetext::placeholder,.field input::placeholder{color:var(--ink-3)}
+
+.pathchart{position:relative;margin:26px 0 10px;padding-top:26px}
+.pc-limit{position:absolute;top:0;bottom:8px;border-left:2px solid var(--ink);z-index:2}
+.pc-limit span{position:absolute;top:-4px;left:6px;font-size:12.5px;font-weight:600;white-space:nowrap}
+.pc-row{display:grid;grid-template-columns:1fr;gap:5px;margin-bottom:16px}
+.pc-label{font-size:13.5px;color:var(--ink-2)}
+.pc-track{position:relative;height:26px;background:var(--rule-2);border-radius:2px}
+.pc-fill{display:block;height:100%;border-radius:2px}
+.pc-fill.now{background:var(--over)}
+.pc-fill.after{background:var(--s-transport)}
+.pc-fill.goal{background:var(--within)}
+.pc-rule{position:absolute;top:-4px;bottom:-4px;width:2px;background:var(--ink);opacity:.9}
+.pc-val{font-size:20px;font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:-.03em;
+  position:absolute;right:0;top:-24px}
+.pc-val em{font-style:normal;font-size:12px;color:var(--ink-3);margin-left:3px}
+.pc-val.now{color:var(--over)} .pc-val.after{color:var(--s-transport)} .pc-val.goal{color:var(--within)}
+.pc-row{position:relative;padding-top:24px}
+.pc-gap{font-size:13px;color:var(--ink-3);margin-top:14px}
+
+/* ---------- modal ---------- */
+.modal{position:fixed;inset:0;z-index:90;display:none}
+.modal.live{display:block}
+.modal-bg{position:absolute;inset:0;background:rgba(10,20,18,.5)}
+.modal-box{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(560px, calc(100vw - 32px));max-height:86vh;overflow-y:auto;
+  background:var(--paper);border-radius:6px;padding:28px 24px 24px;
+}
+.modal-close{position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;cursor:pointer;color:var(--ink-3);line-height:1}
+.flow{margin:20px 0}
+.flow-node{padding:13px 16px;border:1px solid var(--rule);border-radius:3px;background:var(--card)}
+.flow-node b{font-size:22px;font-weight:200;font-variant-numeric:tabular-nums;letter-spacing:-.04em}
+.flow-node .t{font-size:13.5px;color:var(--ink-2)}
+.flow-node.end{border-color:var(--within);background:var(--within-soft)}
+.flow-node.start{border-color:var(--over);background:var(--over-soft)}
+.flow-link{height:22px;border-left:1px solid var(--rule);margin-left:20px}
+.flow-mid{font-size:13.5px;color:var(--ink-3);padding:4px 0 4px 16px}
+
+table.src{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:8px}
+table.src td{padding:8px 0;border-top:1px solid var(--rule-2);vertical-align:top}
+table.src td:first-child{color:var(--ink-3);width:38%;padding-right:12px}
+
+.footer{margin-top:60px;padding-top:18px;border-top:1px solid var(--rule-2);
+  display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--ink-3);flex-wrap:wrap}
+.footer button{background:none;border:0;color:var(--ink-3);font-size:12.5px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+@media (max-width:420px){
+  h1{font-size:26px}
+  .stat.hero .stat-val b{font-size:60px}
+  .opts.two{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <div class="rail" id="rail" hidden>
+    <div class="rail-top">
+      <div class="rail-stage" id="railStage">왜 1.5℃ 라이프스타일인가</div>
+      <div class="rail-count" id="railCount">1 / 8</div>
+    </div>
+    <div class="rail-ticks" id="railTicks"></div>
+  </div>
+
+  <main id="screens"></main>
+
+  <div class="footer">
+    <span id="footNote">1.5℃ 라이프스타일 2주 살기 · 시연용 프로토타입</span>
+    <span id="footTools">
+      <button id="btnTools" aria-expanded="false">⋯ 시연 도구</button>
+      <span id="toolsInner" hidden>
+        &nbsp;·&nbsp;<button id="btnSettings">설정</button>
+        &nbsp;·&nbsp;<button id="btnReset">처음부터</button>
+      </span>
+    </span>
+  </div>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box">
+    <button class="modal-close" data-close aria-label="닫기">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   CONFIG  — 시연/운영 시 여기 값만 바꾸면 전체에 반영됩니다.
+   ============================================================ */
+const CONFIG = {
+  TARGET_2030: 5.9,          // 2030년 1.5℃ 라이프스타일 목표 (tCO2e/인/년)
+  GLOBAL_AVG: 4.6,           // 전 세계 1인당 배출량
+  KOREA_AVG: 13.6,           // 한국 1인당 배출량
+  PROGRAM_DAYS: 14,
+  MIDPOINT_DAY: 7,          // 이 날짜까지 기록하면 중간 결과를 보여줍니다
+  ACTIONS_TO_PICK: 3,
+
+  /* 전기·난방을 가구원 수로 나눠 1인분으로 계산합니다.
+     주거면적과 같은 기준을 적용합니다. (원본 계산기는 나누지 않았습니다) */
+  SPLIT_HOUSEHOLD_ENERGY: true,
+
+  /* 참가자 결과를 모을 구글 시트 주소와 암호.
+     Apps Script 웹 앱을 배포한 뒤 그 URL을 SUBMIT_URL 에,
+     Apps Script 안의 SECRET 과 같은 값을 SUBMIT_KEY 에 넣으세요.
+     비워두면 전송하지 않고 기기에만 저장합니다. (설정 방법은 아래 주석 참고) */
+  SUBMIT_URL: "",
+  SUBMIT_KEY: ""
+};
+
+/* ============================================================
+   구글 시트 연동 방법 (참가자 결과 자동 수집)
+   1) 수집용 구글 시트를 열고 확장 프로그램 → Apps Script 에 아래 코드를 붙여넣습니다.
+
+      var SECRET = "wonju2026";   // CONFIG.SUBMIT_KEY 와 같은 값으로 맞추세요
+      function doPost(e){
+        var d = JSON.parse(e.postData.contents);
+        if(d.key !== SECRET) return ContentService.createTextOutput("denied");
+        var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
+        sh.appendRow([new Date(), d.stage, d.name, d.contact, d.region, d.age, d.gender, d.spend,
+          d.food, d.consumption, d.transport, d.housing, d.leisure,
+          d.total, d.target, d.gap, d.rate,
+          d.action1, d.action2, d.action3,
+          d.days, d.reducedKg, d.annualT, d.afterT, d.remainT,
+          d.policy1a, d.policy1b, d.policy1c, d.policy2a, d.policy2b, d.policy2c,
+          d.barrier1, d.barrier2, d.barrier3, d.social, d.notes]);
+        return ContentService.createTextOutput("ok");
+      }
+
+   2) 배포 → 새 배포 → 유형: 웹 앱 →
+      실행 사용자: 나, 액세스 권한: 모든 사용자 → 배포
+   3) 나온 웹 앱 URL을 위 CONFIG.SUBMIT_URL 에 붙여넣습니다.
+
+   참가자 한 명이 두 줄을 남깁니다. 계산을 마쳤을 때 '계산완료',
+   14일을 마쳤을 때 '2주완료' 입니다.
+   ※ claude.ai 미리보기에서는 외부 전송이 차단되어 동작하지 않습니다.
+     연구소 홈페이지나 GitHub Pages에 올린 뒤부터 작동합니다.
+   ============================================================ */
+
+/* 목표값의 근거 설명 — 산식/출처가 바뀌면 이 객체만 수정합니다.
+   ※ 13.6 × 72% × 60% 산식(≈5.9t)은 사용하지 않습니다. 5.4t 단일 기준. */
+const TARGET_BASIS = {
+  title: "2030년까지 어디까지 줄여야 할까요?",
+  body: [
+    "EDGAR 자료를 기준으로 보면 2018년 전 세계 1인당 탄소배출량은 약 4.6톤, 한국은 약 13.6톤입니다.",
+    "한국처럼 소득과 소비 수준이 높은 국가의 1인당 탄소배출량은 세계 평균보다 높습니다.",
+    "1.5℃ 라이프스타일은 기후위기를 막기 위해 사용할 수 있는 탄소예산 안에서 개인의 생활과 소비에서 발생하는 탄소배출도 함께 줄여야 한다는 관점에서 출발합니다.",
+    "국가 배출량 가운데 개인의 생활과 소비에 연결된 몫을 약 72%로 보고, 2030년까지 그중 60% 수준으로 줄이는 경로를 적용하면 연간 1인당 약 5.9톤이 됩니다."
+  ],
+  rows: [
+    ["기준 연도", "2018년"],
+    ["배출량 출처", "EDGAR (국가별 1인당 온실가스 배출량)"],
+    ["산식", "13.6톤 × 72% × 60% ≒ 5.9톤"],
+    ["2030년 목표값", "5.9톤 (본 프로젝트 설정값)"],
+    ["수정 위치", "코드 상단 CONFIG.TARGET_2030 / TARGET_BASIS"]
+  ],
+  caveat: "목표값과 그 근거는 프로그램 운영 기준에 따라 조정될 수 있습니다. 화면의 모든 수치는 CONFIG 값을 따라 자동으로 다시 계산됩니다."
+};
+
+const SECTORS = {
+  food:        { name:"먹거리", color:"var(--s-food)" },
+  consumption: { name:"소비",   color:"var(--s-consumption)" },
+  transport:   { name:"교통",   color:"var(--s-transport)" },
+  housing:     { name:"주거",   color:"var(--s-housing)" },
+  leisure:     { name:"여가",   color:"var(--s-leisure)" }
+};
+const SECTOR_KEYS = ["food","consumption","transport","housing","leisure"];
+
+/* ============================================================
+   data/carbonFactors
+   출처: 지역전환 도넛 1.5℃ 라이프스타일 계산기 (경기도용)
+   모든 값의 단위는 연간 tCO2e. 시트의 계수를 그대로 옮겼습니다.
+   ============================================================ */
+const CARBON_FACTORS = {
+  food: {
+    eatOut: 0.178,                 // 주당 외식·배달 1회
+    diet:   [1.24, 0.80, 0.60],    // 매일 / 주3회 / 채식 위주
+    coffee: 0.10,                  // 하루 3잔 이상
+    waste:  0.001                  // 음식물 쓰레기가 자주 생김
+  },
+  consumption: {
+    clothes: 0.03,                 // 새 옷 1벌
+    mend:   -0.01,                 // 수선해 입은 옷 1벌
+    appliances: [
+      ["ricecooker","전기밥솥",0.26], ["fridge","냉장고",0.09], ["aircon","에어컨",0.11],
+      ["tv","TV",0.22], ["vacuum","청소기",0.04], ["washer","세탁기",0.05],
+      ["heatpad","전기장판",0.04], ["microwave","전자레인지",0.09],
+      ["dishdryer","식기건조기",0.08], ["dryer","세탁건조기",0.42]
+    ],
+    devices: [
+      ["phone","핸드폰",0.08], ["tablet","태블릿",0.05], ["laptop","노트북",0.06],
+      ["desktop","데스크탑",0.09], ["watch","스마트워치",0.007]
+    ],
+    pets: [ ["cat","고양이",0.31], ["dog","강아지",0.77] ]
+  },
+  transport: {                     // 주당 이용 1시간 기준
+    subway: 0.06, bus: 0.05, bike: 0.02, ev: 0.11, car: 0.16,
+    flight: 0.16,                  // 지난 1년 항공기 이용 1시간
+    /* 기차: 1km당 14gCO2e (연구소 제공), 평균 속도 시속 200km 적용.
+       탄 시간으로 묻기 때문에 시간 → 거리 환산에 속도를 씁니다.
+       1시간 = 200km × 14g = 2.8kg = 0.0028톤.
+       속도 기준이 바뀌면 trainKmPerHour 한 줄만 고치면 됩니다. */
+    trainKmPerHour: 200,
+    trainGramPerKm: 14,
+    get train(){ return this.trainKmPerHour * this.trainGramPerKm / 1000 / 1000; }
+  },
+  housing: {
+    areaPerPyeong: 0.14,           // 1인당 주거면적 1평
+
+    /* 전기 사용량: 월 kWh × 12개월 × 0.0004781 tCO2e/kWh
+       (환경공단 지자체 온실가스 감축사업별 감축원단위 적용 가이드라인, 2023) */
+    elecPerKwh: 0.0004781,
+    elecKwh: [80, 200, 300, 400, 600],
+    heatTypes: [
+      ["gas","개별 가스보일러",      [0.231, 0.462, 0.693, 0.924, 0.945]],
+      ["district","지역난방",        [0.270, 0.594, 0.891, 1.188, 1.215]],
+      ["oil","개별 기름보일러",      [0.125, 0.250, 0.375, 0.500, 0.625]],
+      ["central","중앙난방",         [0.270, 0.594, 0.891, 1.188, 1.215]],
+      ["briquette","연탄",           [2.912, 5.831, 8.743,11.648,11.718]],
+      ["electric","전기",            [0.2115,0.3337,0.4465,0.5875,0.5922]]
+    ],
+    solar: [0, -0.14, -0.50, -0.14],   // 아니오 / 아파트 / 단독주택 / 다세대주택
+    insulationPerPyeong: -0.003,
+    ai: [0.02, 0.007, 0.0005, 0]       // 매일1번+ / 주2~3번 / 월1번 / 안 씀
+  },
+  leisure: {
+    tv: 0.11, mobile: 0.45, game: 0.07, book: 0.01,
+    ski: 0.05, golf: 0.03, stay: 0.09
+  },
+  /* 일일 기록용 단위 계수 (kgCO2e) — 위 연간 계수에서 환산 */
+  daily: {
+    meatMeal: 3.39,        // 고기 한 끼 (UNFCCC 닭고기 기준)
+    eatOut: 3.43,          // 외식·배달 한 끼
+    coffee: 0.087,         // 아메리카노 한 잔
+    clothes: 25.8,         // 새 옷 한 벌
+    perWeeklyHour: 1000/52 // 주당 1시간 계수(t/년) → 1시간당 kg
+  }
+};
+
+/* ============================================================
+   사전 문항 (배출량 계산에는 쓰이지 않는 참가자 특성)
+   ============================================================ */
+const PRE_QUESTIONS = [
+  /* 원주시 행정구역 — 1읍 8면 16행정동 (원주시청 읍면동 안내 기준) */
+  { id:"region", type:"select", t:"어느 지역에 사시나요?", ph:"읍·면·동을 선택하세요",
+    o:["문막읍",
+       "소초면","호저면","지정면","부론면","귀래면","흥업면","판부면","신림면",
+       "중앙동","원인동","개운동","명륜1동","명륜2동","일산동","학성동","단계동","우산동",
+       "태장1동","태장2동","봉산동","행구동","무실동","단구동","반곡관설동",
+       "원주시 밖에 삽니다"] },
+  { id:"age", t:"연령대는 어떻게 되시나요?", o:["10대","20대","30대","40대","50대","60대","70대 이상"] },
+  { id:"gender", t:"성별", o:["여성","남성","기타"] },
+  { id:"spend", t:"가구당 월 평균 소비지출액", o:["150만 원 이하","151~250만 원","251~350만 원",
+      "351~450만 원","451만 원 이상"] }
+];
+
+/* ============================================================
+   계산기 문항
+   type: num(숫자) / one(택1) / yesno / count(항목별 개수) / multi(중복 체크)
+   ============================================================ */
+/* 분야 제목 아래에 공통으로 붙는 안내 */
+const SECTION_NOTES = {
+  transport: "일상 출퇴근 외에 출장으로 인한 이동은 뺍니다."
+};
+
+const QUESTIONS = {
+  food: [
+    { id:"eatOut", type:"num", plain:true, unit:"회", t:"일주일에 외식을 하거나 배달음식을 먹는 횟수는?", max:30 },
+    { id:"diet", type:"one", t:"다음 중 평소 식단을 가장 잘 설명하는 것을 하나 고르세요",
+      o:["고기를 매일 먹는다","일주일에 3번 정도 먹는다","채식 위주로 먹는다"] },
+    { id:"coffee", type:"yesno", t:"커피를 하루에 3잔 이상 마신다" },
+    { id:"waste", type:"yesno", t:"남기거나 썩어서 버리는 음식 쓰레기가 자주 생긴다" }
+  ],
+  consumption: [
+    { id:"clothes", type:"num", plain:true, unit:"벌", t:"지난 1년간 구매한 자신의 옷은 몇 벌인가요?",
+      h:"신발과 속옷은 제외합니다.", max:200 },
+    { id:"mend", type:"num", plain:true, unit:"벌", t:"지난 1년간 수선해서 입은 옷은 몇 벌인가요?", max:200 },
+    { id:"appliances", type:"count", t:"갖고 있는 전자기기의 개수를 적어주세요",
+      h:"없으면 0으로 두세요. 냉장고와 같은 공용 기기는 가구당 개수로 표시, 핸드폰 등 개인 기기는 자신의 것만 표시합니다.",
+      items:"appliances" },
+    { id:"devices", type:"count", t:"갖고 있는 기기의 개수를 적어주세요", items:"devices" },
+    { id:"pets", type:"count", t:"함께 사는 반려동물이 있나요?", items:"pets" }
+  ],
+  transport: [
+    { id:"subway", type:"num", unit:"시간", t:"일주일에 지하철을 타는 시간은?",
+      h:"주중과 주말을 모두 합쳐서, 30분은 0.5시간으로 적어주세요.",
+      step:0.5, max:60 },
+    { id:"bus", type:"num", unit:"시간", t:"일주일에 버스를 타는 시간은?", step:0.5, max:60 },
+    { id:"bike", type:"num", unit:"시간", t:"일주일에 자전거를 타는 시간은?", step:0.5, max:60 },
+    { id:"ev", type:"num", unit:"시간", t:"일주일에 전기승용차를 타는 시간은?", step:0.5, max:60 },
+    { id:"car", type:"num", unit:"시간", t:"일주일에 내연기관 승용차를 타는 시간은?",
+      h:"직접 운전하거나 가족 차에 함께 타는 경우를 모두 포함합니다.", step:0.5, max:60 },
+    { id:"train", type:"num", unit:"시간", t:"지난 1년간 기차를 탄 시간은 모두 몇 시간인가요?",
+      h:"왕복 시간을 합쳐서 적어주세요. 30분은 0.5시간입니다. 편도 기준 원주–청량리 약 0.5시간, 원주–강릉 약 0.8시간, 서울–부산 약 2시간입니다.",
+      step:0.5, max:500 },
+    { id:"flight", type:"num", unit:"시간", t:"지난 1년간 비행기를 탄 시간은 모두 몇 시간인가요?",
+      h:"왕복 시간을 합쳐서 적어주세요. (인천–도쿄 왕복 약 5시간, 인천–뉴욕 왕복 약 29시간)",
+      step:0.5, max:300 }
+  ],
+  housing: [
+    { id:"members", type:"num", unit:"명", t:"함께 사는 가구원은 몇 명인가요?",
+      h:"본인을 포함한 인원수입니다. 혼자 사시면 1을 적어주세요. 주거 면적과 전기·난방 사용량을 이 인원수로 나누어 1인분으로 계산합니다.",
+      min:0, max:12 },
+    { id:"areaTotal", type:"num", unit:"평", t:"집 전체 면적은 몇 평인가요?",
+      h:"1평은 약 3.3㎡입니다. 위에 적은 가구원 수로 나누어 1인당 면적을 계산합니다.", max:200 },
+    { id:"elec", type:"one", t:"한 달 전기 사용량은 어느 정도인가요?",
+      h:"집 전체의 사용량입니다. 고지서의 사용량(kWh)이나 청구금액 중 아는 쪽으로 고르세요. 여름·겨울이 아닌 보통 달을 기준으로 합니다.",
+      o:["100kWh 이하 (약 1만원 이하)","200kWh 안팎 (약 2만원대)","300kWh 안팎 (약 4~5만원)",
+         "400kWh 안팎 (약 7~8만원)","500kWh 넘음 (10만원 이상)"] },
+    { id:"heatType", type:"one", t:"난방 형태를 고르세요",
+      h:"지역에 열병합 발전소가 있다면 지역난방, 집에 개별 가스보일러가 있다면 개별 가스보일러입니다.",
+      o:["개별 가스보일러","지역난방","개별 기름보일러","중앙난방","연탄","전기"] },
+    { id:"heatCost", type:"one", t:"겨울철 난방비는 한 달 평균 얼마인가요?",
+      h:"집 전체의 난방비입니다. 고지서의 청구금액을 기준으로 고르세요.",
+      o:["10만원 이하 (가스 약 110㎥ / 전기 약 450kWh)","11~20만원 (가스 약 220㎥ / 전기 약 710kWh)",
+         "21~30만원 (가스 약 330㎥ / 전기 약 950kWh)","31~40만원 (가스 약 440㎥ / 전기 약 1,250kWh)",
+         "40만원 이상"] },
+    { id:"solar", type:"one", t:"재생가능에너지로 생산한 전기를 사용하나요?",
+      h:"사용한다면 주거 형태에 맞는 쪽을 고르세요.",
+      o:["아니오","네 (아파트 거주)","네 (단독주택 거주)","네 (다세대주택 거주)"] },
+    { id:"insulation", type:"yesno", t:"현재 주거지에 단열, 창호 개선을 한 적이 있나요?" },
+    { id:"ai", type:"one", t:"인공지능 프로그램을 얼마나 사용하나요?",
+      o:["매일 1번 이상","일주일에 2~3번","한 달에 한 번","안 쓴다"] }
+  ],
+  leisure: [
+    { id:"leisureWays", type:"multi", t:"주로 여가 시간을 보내는 방법은?",
+      h:"해당하는 것을 모두 고르세요.",
+      o:[["tv","TV로 공중파·케이블·OTT 시청"],["mobile","모바일로 게임·동영상·SNS·인터넷"],
+         ["game","게임"],["book","책읽기"]] },
+    { id:"ski", type:"num", unit:"일", t:"지난 1년간 스키장에서 보낸 날은 며칠인가요?", max:120 },
+    { id:"golf", type:"num", unit:"일", t:"지난 1년간 골프장을 찾은 날은 며칠인가요?", max:200 },
+    { id:"stay", type:"num", unit:"일", t:"지난 1년간 여행지에서 숙박한 날은 며칠인가요?",
+      h:"업무·출장으로 인한 숙박은 뺍니다.", max:200 }
+  ]
+};
+
+/* ============================================================
+   감축계산기 (5.9톤 이상) — 시트의 감축행동과 계산식
+   potential(res) → 연간 감축 잠재력 (tCO2e)
+   twoWeek: 2주 안에 실제로 해볼 수 있는 행동인지
+   track: 기록 방식. common=먹거리·소비 공통기록과 자동 연동
+   ============================================================ */
+const ACTIONS = [
+  { id:"eatout_half", sector:"food", track:"common", twoWeek:true,
+    name:"외식이나 배달 음식 횟수를 줄인다", desc:"지금의 절반으로 줄여봅니다.",
+    potential:r=>r.parts.eatOut/2 },
+  { id:"meat_less", sector:"food", track:"common", twoWeek:true,
+    name:"고기 먹는 횟수를 줄인다", desc:"한 단계 아래 식단으로 옮겨봅니다.",
+    potential:r=>r.parts.diet/2 },
+  { id:"coffee_half", sector:"food", track:"common", twoWeek:true,
+    name:"커피 마시는 횟수를 절반으로 줄인다", desc:"하루 마시는 잔 수를 절반으로.",
+    potential:r=>r.parts.coffee/2 },
+
+  { id:"clothes_less", sector:"consumption", track:"common", twoWeek:true,
+    name:"연간 구매하는 옷을 절반으로 줄인다", desc:"1.5℃ 라이프스타일 기준인 연 5벌 수준까지.",
+    potential:r=>Math.max(0, r.parts.clothes - 0.125) },
+  { id:"clothes_long", sector:"consumption", track:"common", twoWeek:true,
+    name:"구매한 옷은 가능한 오래 입는다", desc:"고쳐 입고, 빌려 입고, 물려 입습니다.",
+    potential:r=>Math.max(0, r.parts.clothes * 0.2) },
+  { id:"device_long", sector:"consumption", track:"common", twoWeek:false,
+    name:"스마트폰·노트북의 교체주기를 두 배로 늘린다", desc:"쓰던 기기를 더 오래 씁니다.",
+    potential:r=>r.parts.devices/2 },
+  { id:"pet_less", sector:"consumption", track:"common", twoWeek:true,
+    name:"반려동물을 위한 소비재를 줄인다", desc:"용품과 간식 구매를 줄입니다.",
+    potential:r=>r.parts.pets/2 },
+
+  { id:"car_to_transit", sector:"transport", track:"car", twoWeek:true,
+    name:"내연기관 승용차 대신 대중교통을 이용한다", desc:"같은 시간을 지하철·버스로 바꿉니다.",
+    potential:r=>Math.max(0, (r.ans.car||0) * (CARBON_FACTORS.transport.car - CARBON_FACTORS.transport.subway)) },
+  { id:"ev_to_transit", sector:"transport", track:"car", twoWeek:true,
+    name:"전기승용차 대신 대중교통을 이용한다", desc:"같은 시간을 지하철·버스로 바꿉니다.",
+    potential:r=>Math.max(0, (r.ans.ev||0) * (CARBON_FACTORS.transport.ev - CARBON_FACTORS.transport.subway)) },
+  { id:"car_weekday", sector:"transport", track:"car", twoWeek:true,
+    name:"자가용은 출퇴근에만 이용하고 주말에는 쓰지 않는다", desc:"주말 운행을 뺍니다.",
+    potential:r=>(r.parts.car + r.parts.ev)/3 },
+  { id:"car_half", sector:"transport", track:"car", twoWeek:true,
+    name:"자가용 이용을 절반으로 줄인다", desc:"주행 시간을 절반으로.",
+    potential:r=>(r.parts.car + r.parts.ev)/2 },
+  { id:"near_walk", sector:"transport", track:"car", twoWeek:true,
+    name:"가까운 곳은 자전거나 도보로 이동한다", desc:"30분 안쪽 거리에서 차를 뺍니다.",
+    potential:r=>(r.parts.car + r.parts.ev) * 0.2 },
+  { id:"flight_half", sector:"transport", track:"none", twoWeek:false,
+    name:"항공기 사용을 절반 이하로 줄인다", desc:"연간 비행 시간을 절반으로.",
+    potential:r=>r.parts.flight/2 },
+  { id:"flight_none", sector:"transport", track:"none", twoWeek:false,
+    name:"항공기를 사용하지 않겠다", desc:"올해는 비행기를 타지 않습니다.",
+    potential:r=>r.parts.flight },
+
+  { id:"solar", sector:"housing", track:"none", twoWeek:false,
+    name:"지붕태양광(3kW)이나 베란다 태양광(600W)을 설치하겠다", desc:"설치가 필요한 실천입니다.",
+    potential:r=>{ const a = r.ans.solar || 0;
+      if(a === 0) return (r.ans.solarType === 2) ? 0.50 : 0.14;   // 미설치 → 설치 시 감축
+      return Math.abs(CARBON_FACTORS.housing.solar[a]); } },
+  { id:"power30", sector:"housing", track:"home", twoWeek:true,
+    name:"전기 사용량을 30%까지 줄이겠다", desc:"대기전력을 끊고 조명·가전 사용을 줄입니다.",
+    potential:r=>Math.max(0.03, r.parts.elec * 0.3) },
+  { id:"heat30", sector:"housing", track:"home", twoWeek:true,
+    name:"난방 사용량을 30% 줄인다", desc:"설정온도를 낮추고 쓰는 시간을 줄입니다.",
+    potential:r=>r.parts.heating * 0.333 },
+  { id:"insulate", sector:"housing", track:"none", twoWeek:false,
+    name:"단열, 창호 개선을 시도한다", desc:"공사가 필요한 실천입니다.",
+    potential:r=>r.raw.areaPerPerson * 0.0013 },
+
+  { id:"video_less", sector:"leisure", track:"leisure", twoWeek:true,
+    name:"동영상 시청 시간을 줄인다", desc:"TV와 모바일 시청을 절반으로.",
+    potential:r=>(r.parts.tv + r.parts.mobile)/2 },
+  { id:"game_less", sector:"leisure", track:"leisure", twoWeek:true,
+    name:"게임하는 시간을 줄인다", desc:"게임 시간을 절반으로.",
+    potential:r=>r.parts.game/2 },
+  { id:"ski_half", sector:"leisure", track:"none", twoWeek:false,
+    name:"스키를 절반 이하로 줄인다", desc:"", potential:r=>r.parts.ski/2 },
+  { id:"golf_none", sector:"leisure", track:"none", twoWeek:false,
+    name:"골프를 하지 않는다", desc:"", potential:r=>r.parts.golf },
+  { id:"travel_half", sector:"leisure", track:"leisure", twoWeek:true,
+    name:"여행을 절반 이하로 줄인다", desc:"멀리 가는 대신 가까운 곳에서 쉽니다.",
+    potential:r=>r.parts.stay/2 }
+];
+
+/* 감축을 위해 정부·지자체에 요구하는 정책 (5.9톤 이상) */
+const POLICIES_REDUCE = [
+  "대중교통 노선 확대","대중교통 요금 지원","자전거 전용도로 확충","승용차 마일리지 대폭 확대",
+  "전기차 구매 보조금 확대","전기자전거 구매 보조금 신설","태양광 설치 시 보조금","히트펌프 설치 보조금",
+  "단열창호개선(집수리) 보조금 지원","학교나 직장 급식에서 채식 선택","임대인의 에너지 효율개선 의무화",
+  "전자기기 오래 쓸 수 있도록 수리할 권리 보장","비육식 식단을 선택할 수 있는 식당에 대한 인센티브 지급",
+  "중고 시장 활성화","공공 체육시설 확대"
+];
+
+/* 사회적 기초 계산기 (5.9톤 미만) */
+const SOCIAL_FOUNDATION = [
+  { sector:"food", items:["경제적 여건 때문에 먹거리 선택권이 별로 없다",
+      "먹거리를 구매할 곳이 멀리 떨어져 있다","푸드뱅크를 이용한다"] },
+  { sector:"consumption", items:["소비할 돈이 부족하다","돈이 없어 필수품도 부족하다",
+      "중고로 구매할 기회가 부족하다","물건을 오래 쓰고 싶지만, 고장난 것을 고칠 방법이 마땅치 않다"] },
+  { sector:"transport", items:["대중교통이 부족해서 이동에 어려움을 겪는다",
+      "경제적 여건 때문에 대중교통도 부담이 된다","교통 시설 접근성이 떨어져서 이동에 어려움을 겪는다"] },
+  { sector:"housing", items:["냉난방시설 및 전기사용에 비용 부담이 있다","단전 경험이 있다",
+      "1인당 주거면적이 14㎡(5평) 이하다","반지하 또는 옥탑방이라 냉난방에 취약하다",
+      "주거비용을 감당하기 힘들어진다"] },
+  { sector:"leisure", items:["이웃 주민을 만나 교류할 기회가 부족하다",
+      "주변에 공공 문화시설이 거의 없다","산책할 수 있는 자연친화적 공간이 부족하다"] }
+];
+const POLICIES_SOCIAL = [
+  "공공 문화 시설 확대","최소주거면적 확대","임대주택 확대","임대주택 단열 성능 개선",
+  "대중교통 요금 지원","지역사회 모임 활성화","직장이 가까워지도록 우리 지역에 일자리 창출",
+  "생활임금 보장","난방비 지원","쾌적한 무더위 쉼터 확대","공유 부엌 운영","텃밭 참여 기회",
+  "대형마트 아닌 동네 수퍼마켓 활성화","주거비용 지원","전월세 상한제 강화","대중교통 접근성 개선"
+];
+
+/* 2주 기록에서 고르는 장벽 */
+const BARRIERS = [
+  { id:"transit", label:"대중교통이 부족해서",        social:"대중교통 노선·배차",        ask:"승용차를 줄이기 어려웠던 이유" },
+  { id:"house",   label:"집·설비 성능 때문에",        social:"주택 단열과 냉난방 설비",   ask:"냉난방을 줄이기 어려웠던 이유" },
+  { id:"menu",    label:"먹을 수 있는 선택지가 없어서", social:"직장·학교 식사 선택권",    ask:"채식을 늘리기 어려웠던 이유" },
+  { id:"time",    label:"시간이 없어서",              social:"노동시간과 돌봄시간",       ask:"실천을 이어가기 어려웠던 이유" },
+  { id:"cost",    label:"비용이 부담돼서",            social:"저탄소 선택지의 가격",      ask:"다른 선택을 하기 어려웠던 이유" },
+  { id:"people",  label:"함께 있는 사람들 때문에",    social:"가족·동료와의 생활 합의",   ask:"혼자 바꾸기 어려웠던 이유" },
+  { id:"weather", label:"날씨·건강 때문에",           social:"폭염·한파와 보행 환경",     ask:"실천이 어려웠던 이유" },
+  { id:"none",    label:"어렵지 않았어요",            social:null,                        ask:null }
+];
+
+/* ============================================================
+   상태
+   ============================================================ */
+const STORE_KEY = "lifestyle15.demo.v1";
+let S = {
+  screen: "intro",
+  answers: {},        // {questionId: optionIndex}
+  wizardStep: 0,      // 0~4 (분야)
+  picked: [],         // action ids
+  day: 0,             // 0~13
+  logs: {},           // {dayIndex: {...}}
+};
+
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} }
+function load(){
+  // ?fresh=1 로 열면 저장된 기록을 지우고 완전히 처음부터 시작합니다.
+  try{
+    if(new URLSearchParams(location.search).has("fresh")){
+      localStorage.removeItem(STORE_KEY);
+      return;
+    }
+  }catch(e){}
+  try{
+    const r = localStorage.getItem(STORE_KEY);
+    if(r){ const p = JSON.parse(r); if(p && typeof p === "object") S = Object.assign(S, p); }
+  }catch(e){}
+  // 링크를 연 사람은 언제나 첫 화면에서 시작합니다.
+  // 이전에 진행하던 자리는 첫 화면의 '이어서 하기'로만 돌아갑니다.
+  S.resumeTo = (S.screen && S.screen !== "intro") ? S.screen : null;
+  S.screen = "intro";
+  // 계산기는 항상 첫 분야(먹거리)부터 다시 보여줍니다.
+  // 이전에 답한 내용은 선택된 상태로 남아 있고, 화면이 건너뛰어지지 않습니다.
+  S.wizardStep = 0;
+}
+
+const $ = sel => document.querySelector(sel);
+const fmt = (n, d=1) => Number(n).toFixed(d);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+
+/* ============================================================
+   계산 엔진
+   ============================================================ */
+const num = (v, d=0) => (v === undefined || v === null || v === "" || isNaN(v)) ? d : Number(v);
+const sumCounts = (obj, items) => (items||[]).reduce((s,[k,,c])=> s + num(obj && obj[k]) * c, 0);
+
+function calculate(){
+  const a = S.answers, F = CARBON_FACTORS;
+  const p = {};   // 문항별 배출량
+
+  // 먹거리
+  p.eatOut = num(a.eatOut) * F.food.eatOut;
+  p.diet   = a.diet === undefined ? 0 : F.food.diet[a.diet];
+  p.coffee = a.coffee === 1 ? F.food.coffee : 0;
+  p.waste  = a.waste  === 1 ? F.food.waste  : 0;
+  const food = p.eatOut + p.diet + p.coffee + p.waste;
+
+  // 소비
+  p.clothes    = num(a.clothes) * F.consumption.clothes;
+  p.mend       = num(a.mend) * F.consumption.mend;           // 음수
+  p.appliances = sumCounts(a.appliances, F.consumption.appliances);
+  p.devices    = sumCounts(a.devices,    F.consumption.devices);
+  p.pets       = sumCounts(a.pets,       F.consumption.pets);
+  const consumption = p.clothes + p.mend + p.appliances + p.devices + p.pets;
+
+  // 교통 (주당 시간 × 계수)
+  p.subway = num(a.subway) * F.transport.subway;
+  p.bus    = num(a.bus)    * F.transport.bus;
+  p.bike   = num(a.bike)   * F.transport.bike;
+  p.ev     = num(a.ev)     * F.transport.ev;
+  p.car    = num(a.car)    * F.transport.car;
+  p.train  = num(a.train) * F.transport.train;   // 시간 × (200km × 14g)
+  p.flight = num(a.flight) * F.transport.flight;
+  const transport = p.subway + p.bus + p.bike + p.ev + p.car + p.train + p.flight;
+
+  // 주거
+  const members = Math.max(1, num(a.members, 1));
+  const areaPerPerson = num(a.areaTotal) / members;
+  p.building = areaPerPerson * F.housing.areaPerPyeong;
+  const ht = F.housing.heatTypes[a.heatType === undefined ? 0 : a.heatType];
+  // 전기·난방은 고지서 기준 가구 단위 값이므로 가구원 수로 나눠 1인분으로 둡니다.
+  // 이후 감축 잠재력과 하루 기록 환산도 모두 이 1인분 값을 씁니다.
+  const div = CONFIG.SPLIT_HOUSEHOLD_ENERGY ? members : 1;
+  const elecHouse = (a.elec === undefined) ? 0
+         : F.housing.elecKwh[a.elec] * 12 * F.housing.elecPerKwh;
+  const heatHouse = (a.heatCost === undefined) ? 0 : ht[2][a.heatCost];
+  p.elecHouse = elecHouse; p.heatHouse = heatHouse;
+  p.elec = elecHouse / div;
+  p.heating = heatHouse / div;
+  p.solar   = F.housing.solar[a.solar || 0];                 // 0 또는 음수
+  p.insulation = a.insulation === 1 ? areaPerPerson * F.housing.insulationPerPyeong : 0;
+  p.ai = a.ai === undefined ? 0 : F.housing.ai[a.ai];
+  const housing = p.building + p.elec + p.heating + p.solar + p.insulation + p.ai;
+
+  // 여가
+  const ways = a.leisureWays || [];
+  p.tv     = ways.includes("tv")     ? F.leisure.tv     : 0;
+  p.mobile = ways.includes("mobile") ? F.leisure.mobile : 0;
+  p.game   = ways.includes("game")   ? F.leisure.game   : 0;
+  p.book   = ways.includes("book")   ? F.leisure.book   : 0;
+  p.ski    = num(a.ski)   * F.leisure.ski;
+  p.golf   = num(a.golf)  * F.leisure.golf;
+  p.stay   = num(a.stay)  * F.leisure.stay;
+  const leisure = p.tv + p.mobile + p.game + p.book + p.ski + p.golf + p.stay;
+
+  const sectors = {
+    food: Math.max(0, food), consumption: Math.max(0, consumption),
+    transport: Math.max(0, transport), housing: Math.max(0, housing),
+    leisure: Math.max(0, leisure)
+  };
+  const total = SECTOR_KEYS.reduce((s,k)=>s+sectors[k], 0);
+  const gap = total - CONFIG.TARGET_2030;
+  const rate = gap > 0 ? (gap / total * 100) : 0;
+  return { sectors, total, gap, rate, parts:p, ans:a,
+           raw:{ members, areaPerPerson }, under: gap <= 0 };
+}
+
+/* 계산기 응답에서 하루치 기준선을 뽑아냅니다 */
+function baseline(){
+  const a = S.answers, D = CARBON_FACTORS.daily, res = calculate();
+  const meatMealsWeek = [7, 3, 0][a.diet === undefined ? 1 : a.diet];
+  return {
+    meatMealsDay: meatMealsWeek / 7,
+    eatOutDay:    num(a.eatOut) / 7,
+    coffeeDay:    a.coffee === 1 ? 3 : 1,
+    clothesDay:   num(a.clothes) / 365,
+    carHoursDay:  (num(a.car) + num(a.ev)) / 7,
+    // 교통수단별 하루 평균 이용 시간 (계산기의 주당 시간 ÷ 7)
+    hoursDay: { car:num(a.car)/7, ev:num(a.ev)/7, subway:num(a.subway)/7,
+                bus:num(a.bus)/7, bike:num(a.bike)/7 },
+    // 하루치 교통 배출량 기준선(kg)
+    transportDayKg: ["car","ev","subway","bus","bike"]
+      .reduce((t,m)=> t + (num(a[m])/7) * kgPerHour(m), 0),
+    aiDayKg: res.parts.ai * 1000 / 365,
+    carKgPerHour: (num(a.car) + num(a.ev)) > 0
+                    ? ((p=>p)(res.parts.car + res.parts.ev) * 1000 / 52) / Math.max(0.01, num(a.car)+num(a.ev))
+                    : 0,
+    heatDayKg:    res.parts.heating * 1000 / 365,
+    elecDayKg:    res.parts.elec * 1000 / 365,
+    leisureDayKg: (res.parts.tv + res.parts.mobile + res.parts.game) * 1000 / 365,
+    meatMealsWeek, res
+  };
+}
+
+/* 일일 기록의 이용 시간 선택지 → 시간 */
+const HOUR_OPTS = [0, 0.5, 1, 2, 3];
+const CAR_HOUR_OPTS = HOUR_OPTS;          // 이전 이름 유지
+
+/* 교통수단별 1시간당 배출량(kg)
+   계산기 계수는 '주당 1시간 = 연간 X톤'이므로, 1시간당 = X × 1000 ÷ 52 주 입니다. */
+function kgPerHour(mode){
+  return CARBON_FACTORS.transport[mode] * 1000 / 52;
+}
+const LOG_MODES = [
+  { f:"carhr",     mode:"car",    label:"내연기관 승용차" },
+  { f:"evhr",      mode:"ev",     label:"전기승용차" },
+  { f:"subwayhr",  mode:"subway", label:"지하철" },
+  { f:"bushr",     mode:"bus",    label:"버스" },
+  { f:"bikehr",    mode:"bike",   label:"자전거" }
+];
+
+/* 하루 기록 → 감축량(kg) */
+function dayReduction(log, b){
+  if(!log) return 0;
+  const D = CARBON_FACTORS.daily;
+  let r = 0;
+  if(log.meat !== undefined){
+    const d = b.meatMealsDay - log.meat;         if(d > 0) r += d * D.meatMeal;
+  }
+  if(log.eatout !== undefined){
+    const d = b.eatOutDay - log.eatout;          if(d > 0) r += d * D.eatOut;
+  }
+  if(log.coffee !== undefined){
+    const d = b.coffeeDay - log.coffee;          if(d > 0) r += d * D.coffee;
+  }
+  if(log.buy !== undefined){
+    const d = b.clothesDay - log.buy;            if(d > 0) r += d * D.clothes;
+  }
+  // 교통: 기록한 수단별 시간으로 그날 배출량을 계산해 기준선과 비교합니다.
+  const loggedModes = LOG_MODES.filter(m => log[m.f] !== undefined);
+  if(loggedModes.length){
+    const todayKg = loggedModes.reduce((t,m)=> t + HOUR_OPTS[log[m.f]] * kgPerHour(m.mode), 0);
+    // 기록하지 않은 수단은 평소대로 이용한 것으로 봅니다.
+    const restKg = LOG_MODES.filter(m => log[m.f] === undefined)
+      .reduce((t,m)=> t + b.hoursDay[m.mode] * kgPerHour(m.mode), 0);
+    const d = b.transportDayKg - (todayKg + restKg);
+    if(d > 0) r += d;
+  }
+  if(log.heat)  r += b.heatDayKg * [0, 0.15, 0.33][log.heat];
+  if(log.ai !== undefined){
+    // 인공지능 사용을 줄인 만큼 (안 씀 0 / 조금 절반 / 평소대로 그대로)
+    const d = b.aiDayKg * [1, 0.5, 0][log.ai];
+    if(d > 0) r += d;
+  }
+  if(log.power) r += b.elecDayKg * 0.3;
+  if(log.screen) r += b.leisureDayKg * 0.5;
+  return r;
+}
+
+function programSummary(){
+  const b = baseline(), res = calculate();
+  const days = Object.keys(S.logs).map(Number).filter(d => S.logs[d] && S.logs[d]._done);
+  let totalKg = 0;
+  const sum = { meat:0, eatout:0, coffee:0, buy:0, carhr:0, evhr:0, subwayhr:0, bushr:0, bikehr:0,
+                heatDays:0, powerDays:0, screenDays:0, aiDays:0 };
+  days.forEach(d=>{
+    const l = S.logs[d];
+    totalKg += dayReduction(l, b);
+    sum.meat   += l.meat   || 0;
+    sum.eatout += l.eatout || 0;
+    sum.coffee += l.coffee || 0;
+    sum.buy    += l.buy    || 0;
+    LOG_MODES.forEach(m=>{ if(l[m.f] !== undefined) sum[m.f] += HOUR_OPTS[l[m.f]]; });
+    if(l.heat)   sum.heatDays++;
+    if(l.power)  sum.powerDays++;
+    if(l.screen) sum.screenDays++;
+    if(l.ai === 0) sum.aiDays++;
+  });
+  const n = days.length || 1;
+  const annualT = (totalKg / n) * 365 / 1000;
+  const after = Math.max(0, res.total - annualT);
+  const bcount = {};
+  days.forEach(d=>(S.logs[d].barriers||[]).forEach(x=>{ if(x!=="none") bcount[x]=(bcount[x]||0)+1; }));
+  const topBarriers = Object.entries(bcount).sort((x,y)=>y[1]-x[1]);
+  const notes = days.filter(d => (S.logs[d].note||"").trim())
+                    .map(d => ({ day:d+1, text:S.logs[d].note.trim() }));
+  return { days:days.length, totalKg, annualT, after, sum, base:b, res, topBarriers, notes };
+}
+
+
+/* ============================================================
+   차트
+   ============================================================ */
+function budgetLine(current, opts){
+  opts = opts || {};
+  const youLabel = opts.label || "나";
+  const T = CONFIG.TARGET_2030, K = CONFIG.KOREA_AVG;
+  const max = Math.max(K, current * 1.08, T * 1.6);
+  const p = v => Math.max(0, Math.min(100, v / max * 100));
+  const cP = p(current), tP = p(T), kP = p(K);
+  const over = current > T;
+  const showK = Math.abs(kP - cP) > 7 && !opts.hideKorea;
+  const place = pct => pct < 17 ? `left:0`
+                     : pct > 83 ? `right:0`
+                     : `left:${pct.toFixed(2)}%;transform:translateX(-50%)`;
+  return `
+  <div class="bl" role="img" aria-label="탄소 예산선. 1.5℃ 한계선 ${fmt(T)}톤, ${youLabel} ${fmt(current)}톤, 한국 평균 ${fmt(K)}톤.">
+    <div class="bl-labels bl-above">
+      <span class="bl-tag lim" style="${place(tP)}">1.5℃ 한계선 ${fmt(T)}톤</span>
+      ${showK ? `<span class="bl-tag dim" style="${place(kP)}">한국 평균 ${fmt(K)}톤</span>` : ``}
+    </div>
+    <div class="bl-track">
+      <i class="fill within" style="width:${Math.min(cP, tP).toFixed(2)}%"></i>
+      ${over ? `<i class="fill over" style="left:${tP.toFixed(2)}%;width:${(cP-tP).toFixed(2)}%"></i>` : ``}
+      ${showK ? `<b class="tick-k" style="left:${kP.toFixed(2)}%"></b>` : ``}
+      <b class="tick-lim" style="left:${tP.toFixed(2)}%"></b>
+    </div>
+    <div class="bl-labels bl-below">
+      <span class="bl-tag ${over?"is-over":"is-within"}" style="${place(cP)}">${esc(youLabel)} ${fmt(current)}톤</span>
+    </div>
+    <div class="bl-legend">
+      <span><i class="swatch" style="background:var(--within)"></i>목표 안쪽</span>
+      ${over?`<span><i class="swatch" style="background:var(--over)"></i>목표를 넘는 부분 ${fmt(current-T)}톤</span>`:``}
+    </div>
+  </div>`;
+}
+
+/* H1. 현재 / 지속 시 / 2030 목표를 한 장의 그래프로 */
+function pathChart(now, after, target){
+  const max = Math.max(CONFIG.KOREA_AVG, now * 1.08, target * 1.6);
+  const p = v => Math.max(0, Math.min(100, v / max * 100));
+  const rows = [
+    { label:"현재",                     v: now,    cls:"now"  },
+    { label:"이 실천을 1년간 지속하면", v: after,  cls:"after"},
+    { label:"2030년 1.5℃ 목표",        v: target, cls:"goal" }
+  ];
+  const tP = p(target);
+  return `
+  <div class="pathchart">
+    <div class="pc-limit" style="left:${tP.toFixed(2)}%"><span>1.5℃ 한계선 ${fmt(target)}</span></div>
+    ${rows.map(r=>`
+      <div class="pc-row">
+        <div class="pc-label">${esc(r.label)}</div>
+        <div class="pc-track">
+          <i class="pc-fill ${r.cls}" style="width:${p(r.v).toFixed(2)}%"></i>
+          <b class="pc-rule" style="left:${tP.toFixed(2)}%"></b>
+        </div>
+        <div class="pc-val ${r.cls}">${fmt(r.v)}<em>톤</em></div>
+      </div>`).join("")}
+    <div class="pc-gap">감축 ${fmt(Math.max(0, now-after))}톤 &nbsp;·&nbsp; 목표까지 ${fmt(Math.max(0, after-target))}톤 남음</div>
+  </div>`;
+}
+
+function donut(sectors, total){
+  const R = 54, C = 2*Math.PI*R, sw = 22;
+  let acc = 0, segs = "";
+  const entries = SECTOR_KEYS.map(k=>[k, sectors[k]]).sort((a,b)=>b[1]-a[1]);
+  entries.forEach(([k,v])=>{
+    const frac = v/total;
+    segs += `<circle cx="70" cy="70" r="${R}" fill="none" stroke="${SECTORS[k].color}"
+      stroke-width="${sw}" stroke-dasharray="${(frac*C).toFixed(2)} ${C.toFixed(2)}"
+      stroke-dashoffset="${(-acc*C).toFixed(2)}" transform="rotate(-90 70 70)"/>`;
+    acc += frac;
+  });
+  return `<svg viewBox="0 0 140 140" width="140" height="140" role="img" aria-label="분야별 배출 비중">
+    ${segs}
+    <text x="70" y="68" text-anchor="middle" font-size="24" font-weight="200"
+      font-family="var(--f)" fill="var(--ink)" letter-spacing="-1">${fmt(total)}</text>
+    <text x="70" y="82" text-anchor="middle" font-size="9" font-family="var(--f)" fill="var(--ink-3)">연간 톤</text>
+  </svg>`;
+}
+
+function breakdown(sectors, total){
+  const entries = SECTOR_KEYS.map(k=>[k, sectors[k]]).sort((a,b)=>b[1]-a[1]);
+  const maxV = entries[0][1];
+  return `<div class="brk">` + entries.map(([k,v])=>`
+    <div class="brk-row">
+      <span>${SECTORS[k].name}</span>
+      <span class="brk-bar"><i style="width:${(v/maxV*100).toFixed(1)}%;background:${SECTORS[k].color}"></i></span>
+      <span class="brk-num">${fmt(v,1)}톤 · ${Math.round(v/total*100)}%</span>
+    </div>`).join("") + `</div>`;
+}
+/* ============================================================
+   화면
+   ============================================================ */
+const STAGES = ["왜 1.5℃ 라이프스타일인가","나의 탄소발자국 계산","2030년 목표와의 격차",
+                "나의 배출구조","감축 가능성이 큰 행동","2주 실천 3개 선택","14일 생활 기록","나의 변화와 사회적 장벽"];
+const STAGE_OF = { intro:0, why:0, profile:1, calcIntro:1, calc:1, result:2, social:3, policy:4,
+                   actions:4, twoweek:4, select:5, log:6, midpoint:6, final:7 };
+
+function go(name){ S.screen = name; save(); render(); window.scrollTo({top:0,behavior:"instant"}); }
+
+function syncFooterTools(){
+  const tools = $("#footTools");
+  if(tools) tools.style.display = (S.screen === "profile") ? "none" : "";
+}
+
+function renderRail(){
+  const rail = $("#rail");
+  if(S.screen === "intro"){ rail.hidden = true; return; }
+  rail.hidden = false;
+  let i = STAGE_OF[S.screen];
+  if(S.screen === "result") i = 3;                 // 격차 + 배출구조를 한 화면에서 다룸
+  $("#railStage").textContent = STAGES[i];
+  $("#railCount").textContent = (i+1) + " / 8";
+  $("#railTicks").innerHTML = STAGES.map((_,k)=>
+    `<i class="${k<i?"on":k===i?"now":""}"></i>`).join("");
+}
+
+/* ---------- ① 시작 ---------- */
+function scIntro(){
+  const steps = ["왜 1.5℃ 라이프스타일인가","나의 현재 탄소발자국 계산","2030년 목표와의 격차 확인",
+    "나의 배출구조 확인","감축 가능성이 큰 생활행동 확인","2주 동안 실험할 행동 3개 선택",
+    "14일 생활 기록과 실험","나의 변화와 사회적 장벽 확인"];
+  const resume = S.answers.beef !== undefined;
+  const back = S.resumeTo || "result";
+  const backName = { calc:"계산기", result:"계산 결과", actions:"감축 가능 행동",
+    twoweek:"2주 살기 안내", select:"실천 선택", log:"14일 기록", final:"최종 결과" }[back] || "계산 결과";
+  return `
+  <div style="padding-top:56px">
+    <p class="kicker">기후생활 시민 실험 프로그램</p>
+    <h1 style="font-size:30px;line-height:1.3;letter-spacing:-.03em">1.5℃ 라이프스타일 2주 살기</h1>
+    <p class="lede">내 생활에서 나오는 탄소배출을 먼저 계산합니다.
+    2030년까지 도달해야 할 1.5℃ 라이프스타일 목표와 지금의 나 사이에 얼마나 거리가 있는지 확인하고,
+    그 거리를 좁히는 생활을 2주 동안 직접 살아봅니다.</p>
+    ${budgetLine(CONFIG.KOREA_AVG, {label:"한국 1인당", hideKorea:true})}
+    <p class="muted" style="margin-top:-2px">지금 한국에서 한 사람이 배출하는 양과 1.5℃ 한계선 사이의 거리입니다.</p>
+    <hr class="hr">
+    <h3 style="margin-bottom:14px">2주살기 프로그램은 다음처럼 구성되었습니다</h3>
+    <ol style="margin:0;padding-left:1.35em;color:var(--ink-2);font-size:15px;line-height:2.05">
+      ${steps.map(s=>`<li>${s}</li>`).join("")}
+    </ol>
+    <div class="btn-row">
+      <button class="btn" data-go="why">2주 살기 시작하기</button>
+    </div>
+    <button class="btn bigsecondary" data-skip-to-log>
+      <span class="bs-t">오늘의 생활 기록하기</span>
+      <span class="bs-s">이미 시작하신 분은 바로 여기로</span>
+    </button>
+    <div style="margin-top:16px">
+      <button class="linkish" data-modal="install">이 페이지를 홈 화면에 앱처럼 추가하기</button>
+    </div>
+    ${resume ? `<div style="margin-top:12px"><button class="linkish" data-go="${back}">이어서 하기 — 이 브라우저에 저장된 ${backName} 화면으로 돌아가기</button></div>` : ``}
+  </div>`;
+}
+
+/* ---------- ② 1.5℃ 라이프스타일 설명 ---------- */
+function comparisonScale(){
+  const G = CONFIG.GLOBAL_AVG, K = CONFIG.KOREA_AVG, T = CONFIG.TARGET_2030;
+  const max = Math.max(K, T * 1.2);
+  const pc = v => Math.max(0, Math.min(100, v / max * 100));
+  const place = p => p < 18 ? "left:0" : p > 82 ? "right:0"
+                   : `left:${p.toFixed(2)}%;transform:translateX(-50%)`;
+  const gP = pc(G), tP = pc(T), kP = pc(K);
+  return `
+  <div class="cscale" role="img"
+    aria-label="전 세계 1인당 ${fmt(G)}톤, 2030년 목표 ${fmt(T)}톤, 한국 1인당 ${fmt(K)}톤을 한 축에 놓은 그래프.">
+    <div class="cs-labels cs-above">
+      <span class="cs-tag lim" style="${place(tP)}">2030년까지 한국 평균 ${fmt(T)}톤</span>
+    </div>
+    <div class="cs-track">
+      <i class="cs-fill within" style="width:${tP.toFixed(2)}%"></i>
+      <i class="cs-fill over" style="left:${tP.toFixed(2)}%;width:${(kP-tP).toFixed(2)}%"></i>
+      <b class="cs-rule" style="left:${tP.toFixed(2)}%"></b>
+      <b class="cs-dot" style="left:${gP.toFixed(2)}%"></b>
+    </div>
+    <div class="cs-labels cs-below">
+      <span class="cs-tag dim" style="${place(gP)}">전세계 평균 ${fmt(G)}톤</span>
+      <span class="cs-tag isover" style="right:0">현재 한국 평균 ${fmt(K)}톤</span>
+    </div>
+    <div class="bl-legend">
+      <span><i class="swatch" style="background:var(--within)"></i>목표 안쪽</span>
+      <span><i class="swatch" style="background:var(--over)"></i>목표를 넘는 부분</span>
+    </div>
+    <p class="note" style="margin-top:20px">한국의 1인당 배출량은 2030년 목표의
+      <b>${(K/T).toFixed(1)}배</b>입니다.<br>
+      전 세계 평균은 이미 목표선 안쪽에 있습니다.</p>
+  </div>`;
+}
+
+function scWhy(){
+  return `
+  <h1>1.5℃ 안에서 살아가려면<br>우리의 생활도 달라져야 합니다.</h1>
+  ${comparisonScale()}
+  <hr class="hr">
+  <p>한국은 전 세계 평균보다 많은 온실가스를 배출하고 있습니다.</p>
+  <p>국가의 온실가스는 산업과 발전뿐 아니라 우리가 먹고, 이동하고, 살고, 소비하는 생활과도 연결되어 있습니다.</p>
+  <p>1.5℃ 라이프스타일은 지구가 감당할 수 있는 범위 안에서 우리의 생활에서 발생하는 탄소배출을 줄여보자는 제안입니다.</p>
+  <div style="margin-top:20px">
+    <button class="btn ghost small" data-modal="basis">자세히 보기 — 왜 ${fmt(CONFIG.TARGET_2030)}톤인가?</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="intro">이전</button>
+    <button class="btn" data-go="profile">다음</button>
+  </div>`;
+}
+
+/* ---------- 목표 설명 상세 모달 ---------- */
+function modalBasis(){
+  return `
+  <h2 style="margin-bottom:6px">${esc(TARGET_BASIS.title)}</h2>
+  <div class="flow">
+    <div class="flow-node start">
+      <div class="t">2018년 한국</div><b>${fmt(CONFIG.KOREA_AVG)}톤</b>
+    </div>
+    <div class="flow-link"></div>
+    <div class="flow-mid">생활과 소비에 연결된 탄소배출</div>
+    <div class="flow-link"></div>
+    <div class="flow-mid">2030년 감축 경로 (72% × 60%)</div>
+    <div class="flow-link"></div>
+    <div class="flow-node end">
+      <div class="t">1.5℃ 라이프스타일 목표</div><b>${fmt(CONFIG.TARGET_2030)}톤</b>
+    </div>
+  </div>
+  ${TARGET_BASIS.body.map(p=>`<p style="font-size:15px">${esc(p)}</p>`).join("")}
+  <table class="src">${TARGET_BASIS.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join("")}</table>
+  <p class="muted" style="margin-top:16px">${esc(TARGET_BASIS.caveat)}</p>`;
+}
+
+/* ---------- G1. 참가자 정보 + 사전 문항 ---------- */
+function formatPhone(v){
+  const d = String(v||"").replace(/[^0-9]/g,"").slice(0,11);
+  if(d.length < 4) return d;
+  if(d.length < 8) return d.slice(0,3) + "-" + d.slice(3);
+  return d.slice(0,3) + "-" + d.slice(3,7) + "-" + d.slice(7);
+}
+function phoneValid(v){
+  return /^01[016789]-\d{3,4}-\d{4}$/.test(String(v||"").trim());
+}
+function profileReady(){
+  const pf = S.profile || {};
+  // 시연 단계 — 이름은 아무 글자나, 전화번호는 형식만 맞으면 통과합니다.
+  return (pf.name||"").trim().length >= 1 && phoneValid(pf.contact);
+}
+
+function scProfile(){
+  const pf = S.profile || {};
+  const phone = pf.contact || "";
+  const phoneBad = phone.length > 0 && !phoneValid(phone);
+  const ok = profileReady();
+  return `
+  <h1>행동에 나서는<br>당신은 누구인가요?</h1>
+  <p class="lede">탄소배출량은 지역, 연령, 성별에 따른 라이프스타일에 따라 달라집니다.
+  이름과 연락처는 프로그램 운영과 결과 안내를 위해 꼭 필요합니다.</p>
+
+  <div class="field">
+    <label for="pf-name">이름 <em>(필수)</em></label>
+    <input id="pf-name" data-profile="name" type="text" autocomplete="name"
+      value="${esc(pf.name||"")}" placeholder="홍길동">
+  </div>
+  <div class="field">
+    <label for="pf-contact">휴대전화번호 <em>(필수)</em></label>
+    <input id="pf-contact" data-phone type="tel" inputmode="numeric" maxlength="13"
+      autocomplete="tel" value="${esc(phone)}" placeholder="010-1234-5678"
+      class="${phoneBad?"bad":""}">
+    <p class="fieldmsg ${phoneBad?"bad":""}" id="phoneMsg">${
+      phoneBad ? "휴대전화번호 11자리를 확인해주세요." : "숫자만 입력하면 자동으로 하이픈이 붙습니다."}</p>
+  </div>
+
+  <hr class="hr">
+  <p class="muted" style="margin-bottom:22px">아래 문항은 답하지 않고 넘어가셔도 됩니다.</p>
+
+  ${PRE_QUESTIONS.map(q=>{
+    if(q.type === "select"){
+      return `<div class="q">
+        <p class="q-title">${esc(q.t)}</p>
+        <select class="selin" data-pre-select="${q.id}">
+          <option value="">${esc(q.ph||"선택하세요")}</option>
+          ${q.o.map((o,i)=>`<option value="${i}" ${pf[q.id]===i?"selected":""}>${esc(o)}</option>`).join("")}
+        </select>
+      </div>`;
+    }
+    return `<div class="q">
+      <p class="q-title">${esc(q.t)}</p>
+      <div class="opts ${q.o.length>4?"two":""}">
+        ${q.o.map((o,i)=>`<button class="opt" data-pre="${q.id}" data-i="${i}"
+          aria-pressed="${pf[q.id]===i}">${esc(o)}</button>`).join("")}
+      </div>
+    </div>`;
+  }).join("")}
+
+  <p class="muted">입력하신 내용은 프로그램 운영 목적으로만 사용하고, 종료 후 파기합니다.</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="why">이전</button>
+    <button class="btn" data-go="calcIntro" ${ok?"":"disabled"}>다음</button>
+  </div>
+  <p class="muted" id="profileHint" style="margin-top:12px;${ok?"display:none":""}">이름과 휴대전화번호를 입력하면 다음으로 넘어갑니다.</p>
+  <p class="muted" style="margin-top:22px;padding-top:14px;border-top:1px solid var(--rule-2)">
+    <button class="linkish" data-demo="profile">시연용 — 예시 이름·번호 채우기</button><br>
+    <button class="linkish" data-go="calcIntro">시연용 — 입력 없이 계속하기</button><br>
+    <span style="font-size:12px">실제 운영 시에는 이 줄을 삭제하세요. (scProfile 함수 맨 아래)</span></p>`;
+}
+
+/* ============================================================
+   구글 시트로 결과 보내기
+   계산을 마쳤을 때 한 번, 2주를 마쳤을 때 한 번 보냅니다.
+   CONFIG.SUBMIT_URL 이 비어 있으면 보내지 않고 기기에만 저장합니다.
+   ============================================================ */
+function buildSubmission(stage){
+  const pf = S.profile || {}, r = calculate();
+  const pre = id => { const q = PRE_QUESTIONS.find(x=>x.id===id);
+    return (q && pf[id] !== undefined) ? q.o[pf[id]] : ""; };
+  const actName = i => { const a = ACTIONS.find(x=>x.id===S.picked[i]); return a ? a.name : ""; };
+  const d = {
+    key: CONFIG.SUBMIT_KEY,                  // Apps Script 의 SECRET 과 대조합니다
+    stage,                                   // "계산완료" 또는 "2주완료"
+    name: pf.name||"", contact: pf.contact||"",
+    region: pre("region"), age: pre("age"), gender: pre("gender"), spend: pre("spend"),
+    food: +r.sectors.food.toFixed(2), consumption: +r.sectors.consumption.toFixed(2),
+    transport: +r.sectors.transport.toFixed(2), housing: +r.sectors.housing.toFixed(2),
+    leisure: +r.sectors.leisure.toFixed(2),
+    total: +r.total.toFixed(2), target: CONFIG.TARGET_2030,
+    gap: +r.gap.toFixed(2), rate: Math.round(r.rate),
+    action1: actName(0), action2: actName(1), action3: actName(2),
+    days:"", reducedKg:"", annualT:"", afterT:"", remainT:"",
+    policy1a:(S.policies||[])[0]||"", policy1b:(S.policies||[])[1]||"", policy1c:(S.policies||[])[2]||"",
+    policy2a:(S.policies2||[])[0]||"", policy2b:(S.policies2||[])[1]||"", policy2c:(S.policies2||[])[2]||"",
+    barrier1:"", barrier2:"", barrier3:"",
+    social:(S.social||[]).join(" / "), notes:""
+  };
+  if(stage === "2주완료"){
+    const P = programSummary();
+    d.days = P.days;
+    d.reducedKg = +P.totalKg.toFixed(1);
+    d.annualT = +P.annualT.toFixed(2);
+    d.afterT = +P.after.toFixed(2);
+    d.remainT = +Math.max(0, P.after - CONFIG.TARGET_2030).toFixed(2);
+    const bl = P.topBarriers.map(([id,c])=>{
+      const B = BARRIERS.find(x=>x.id===id); return B ? `${B.label}(${c}일)` : ""; });
+    d.barrier1 = bl[0]||""; d.barrier2 = bl[1]||""; d.barrier3 = bl[2]||"";
+    d.notes = P.notes.map(n=>`${n.day}일차: ${n.text}`).join(" / ");
+  }
+  return d;
+}
+
+function submitResults(stage){
+  S.sent = S.sent || {};
+  if(S.sent[stage] || !CONFIG.SUBMIT_URL) return;
+  S.sent[stage] = "보내는 중";
+  fetch(CONFIG.SUBMIT_URL, {
+    method:"POST", mode:"no-cors",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(buildSubmission(stage))
+  }).then(()=>{ S.sent[stage] = "완료"; save(); })
+    .catch(()=>{ S.sent[stage] = "실패"; save(); });
+  save();
+}
+
+/* 전송이 안 되는 환경을 위해 운영자가 직접 받을 수 있는 CSV */
+function downloadCsv(){
+  const d = buildSubmission(S.screen === "final" ? "2주완료" : "계산완료");
+  const head = ["제출시각","구분","이름","연락처","지역","연령대","성별","월소비지출",
+    "먹거리","소비","교통","주거","여가","총배출량(톤)","목표(톤)","격차(톤)","감축필요율(%)",
+    "선택한실천1","선택한실천2","선택한실천3","기록일수","2주감축량(kg)","연간환산감축(톤)",
+    "지속시배출량(톤)","남은격차(톤)","정책1차_1","정책1차_2","정책1차_3",
+    "정책2차_1","정책2차_2","정책2차_3","주요장벽1","주요장벽2","주요장벽3",
+    "사회적기초_해당항목","자유기록"];
+  const row = [new Date().toISOString(), d.stage, d.name, d.contact, d.region, d.age, d.gender, d.spend,
+    d.food, d.consumption, d.transport, d.housing, d.leisure, d.total, d.target, d.gap, d.rate,
+    d.action1, d.action2, d.action3, d.days, d.reducedKg, d.annualT, d.afterT, d.remainT,
+    d.policy1a, d.policy1b, d.policy1c, d.policy2a, d.policy2b, d.policy2c,
+    d.barrier1, d.barrier2, d.barrier3, d.social, d.notes];
+  const esc2 = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
+  const csv = "\uFEFF" + head.map(esc2).join(",") + "\n" + row.map(esc2).join(",") + "\n";
+  const blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = `${(S.profile||{}).name||"참가자"}_결과.csv`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+/* ---------- ③ 계산 안내 ---------- */
+function scCalcIntro(){
+  return `
+  <h1>나는 지금<br>얼마나 배출하고 있을까요?</h1>
+  <p class="lede">먹고, 이동하고, 집에서 생활하고, 물건을 사고 여가를 보내는 과정에서도 탄소가 배출됩니다.</p>
+  <p class="lede">몇 가지 질문을 통해 현재 나의 생활에서 발생하는 연간 탄소발자국을 추정해봅니다.</p>
+  <hr class="hr">
+  <div class="brk" style="margin-top:0">
+    ${SECTOR_KEYS.map((k,i)=>`
+      <div class="brk-row" style="grid-template-columns:62px 1fr auto">
+        <span>${SECTORS[k].name}</span>
+        <span class="brk-bar"><i style="width:100%;background:${SECTORS[k].color};opacity:.25"></i></span>
+        <span class="brk-num">${QUESTIONS[k].length}문항</span>
+      </div>`).join("")}
+  </div>
+  <p class="muted" style="margin-top:20px">모두 ${SECTOR_KEYS.reduce((s,k)=>s+QUESTIONS[k].length,0)}문항, 5~7분 정도 걸립니다.
+  정확한 값을 모르면 가장 가까운 쪽을 고르면 됩니다.</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="profile">이전</button>
+    <button class="btn" data-go="calc">계산 시작하기</button>
+  </div>`;
+}
+
+/* ---------- ④ 계산기 wizard ---------- */
+function qAnswered(q){
+  const v = S.answers[q.id];
+  // 숫자·개수 문항은 기본값 0이 곧 응답입니다. 비워두어도 넘어갑니다.
+  if(q.type === "num" || q.type === "count") return true;
+  if(q.type === "multi") return Array.isArray(v);
+  return v !== undefined;
+}
+
+function renderQuestion(q){
+  const v = S.answers[q.id];
+  let body = "";
+
+  if(q.type === "num"){
+    const step = q.step || 1;
+    body = `<div class="numrow">
+      ${q.plain?``:`<button class="numbtn" data-num="${q.id}" data-delta="${-step}" aria-label="줄이기">−</button>`}
+      <input class="numin" data-numinput="${q.id}" type="number" inputmode="decimal"
+        min="${q.min||0}" max="${q.max||999}" step="${step}"
+        value="${(v === undefined || v === "") ? 0 : v}">
+      <span class="numunit">${esc(q.unit||"")}</span>
+      ${q.plain?``:`<button class="numbtn" data-num="${q.id}" data-delta="${step}" aria-label="늘리기">+</button>`}
+    </div>`;
+  }
+  else if(q.type === "yesno"){
+    body = `<div class="opts two">
+      ${["아니오","예"].map((o,i)=>`<button class="opt" data-q="${q.id}" data-i="${i}"
+        aria-pressed="${v===i}">${o}</button>`).join("")}
+    </div>`;
+  }
+  else if(q.type === "one"){
+    body = `<div class="opts ${q.o.length>3?"two":""}">
+      ${q.o.map((o,i)=>`<button class="opt" data-q="${q.id}" data-i="${i}"
+        aria-pressed="${v===i}">${esc(o)}</button>`).join("")}
+    </div>`;
+  }
+  else if(q.type === "multi"){
+    const sel = Array.isArray(v) ? v : [];
+    body = `<div class="opts">
+      ${q.o.map(([k,label])=>`<button class="opt" data-multi="${q.id}" data-k="${k}"
+        aria-pressed="${sel.includes(k)}">${esc(label)}</button>`).join("")}
+    </div>`;
+  }
+  else if(q.type === "count"){
+    const items = CARBON_FACTORS.consumption[q.items];
+    const cur = v || {};
+    body = `<div class="countlist">
+      ${items.map(([k,label])=>`
+        <div class="countrow">
+          <span>${esc(label)}</span>
+          <span class="numrow tight">
+            <button class="numbtn" data-count="${q.id}" data-k="${k}" data-delta="-1">−</button>
+            <input class="numin small" data-countinput="${q.id}" data-k="${k}" type="number"
+              inputmode="numeric" min="0" max="20" value="${num(cur[k])}">
+            <button class="numbtn" data-count="${q.id}" data-k="${k}" data-delta="1">+</button>
+          </span>
+        </div>`).join("")}
+    </div>`;
+  }
+
+  return `<div class="q">
+    <p class="q-title">${esc(q.t)}</p>
+    ${q.h?`<p class="q-help">${esc(q.h)}</p>`:``}
+    ${q.tbd?`<p class="q-help" style="color:var(--over)">${esc(q.tbd)}</p>`:``}
+    ${body}
+  </div>`;
+}
+
+function scCalc(){
+  const k = SECTOR_KEYS[S.wizardStep];
+  const qs = QUESTIONS[k];
+  const missing = qs.filter(q => !qAnswered(q));
+  const last = S.wizardStep === SECTOR_KEYS.length-1;
+  return `
+  <div class="sect-head">
+    <h2 style="color:${SECTORS[k].color}">${SECTORS[k].name}</h2>
+    <span class="dots">${SECTOR_KEYS.map((_,i)=>`<i class="${i<=S.wizardStep?"on":""}"></i>`).join("")}</span>
+  </div>
+  ${SECTION_NOTES[k] ? `<p class="note" style="margin:-10px 0 26px">${esc(SECTION_NOTES[k])}</p>` : ``}
+  ${qs.map(renderQuestion).join("")}
+  <div class="btn-row">
+    <button class="btn ghost" data-calcprev>이전</button>
+    <button class="btn" data-calcnext ${missing.length?"disabled":""}>${last?"결과 보기":"다음"}</button>
+  </div>
+  ${missing.length?`<div class="warn" style="margin-top:12px">아직 ${missing.length}개 문항이 비어 있습니다.
+    해당 없으면 0을 적거나 ‘아니오’를 선택해주세요.</div>`:``}
+  <div style="margin-top:22px"><button class="linkish" data-demo="fill">시연용 예시 응답 채우기</button></div>`;
+}
+
+/* ---------- ⑤ 결과: 나와 1.5℃ 한계선 ---------- */
+function scResult(){
+  const r = calculate();
+  submitResults("계산완료");
+  const top = SECTOR_KEYS.map(k=>[k, r.sectors[k]]).sort((a,b)=>b[1]-a[1])[0];
+  return `
+  <div class="stat hero ${r.under?"mark-within":"mark-over"}">
+    <div class="stat-label">나의 예상 연간 라이프스타일 탄소발자국</div>
+    <div class="stat-val"><b>${fmt(r.total)}</b><span>톤</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">2030년 1.5℃ 라이프스타일 목표</div>
+    <div class="stat-val"><b>${fmt(CONFIG.TARGET_2030)}</b><span>톤</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">${r.under?"목표선까지 남은 여유":"목표까지"}</div>
+    <div class="stat-val"><b>${fmt(Math.abs(r.gap))}</b><span>${r.under?"톤 아래에 있습니다":"톤 줄여야 합니다"}</span></div>
+  </div>
+  ${budgetLine(r.total)}
+  ${r.under ? `
+    <p class="note" style="margin-top:26px">현재 추정 배출량은 2030년 라이프스타일 목표 안에 있습니다.<br>
+    이미 낮은 탄소배출 생활을 하고 있는 영역이 무엇인지, 또 어떤 생활조건이 이를 가능하게 하는지 살펴봅니다.</p>
+    <p class="muted" style="margin-top:14px">추가 감축률 0% — 더 줄여야 한다고 요구하지 않습니다.</p>
+  ` : `
+    <p class="note" style="margin-top:26px">현재 생활방식을 기준으로 하면 2030년 목표보다 약 ${fmt(r.gap)}톤 높은 수준입니다.</p>
+    <p style="margin-top:18px;font-size:17px">현재 생활에서 약 <b class="num" style="font-size:26px;font-weight:300">${Math.round(r.rate)}%</b>를 줄이면
+    2030년 목표에 도달할 수 있습니다.</p>
+  `}
+  <hr class="hr">
+  <h2>나의 ${fmt(r.total)}톤은 어디에서 나올까요?</h2>
+  <p class="muted" style="margin-bottom:20px">이 숫자는 잘하고 못하고를 가르기 위한 것이 아닙니다.
+  어디에 변화의 여지가 있는지 찾기 위한 것입니다.</p>
+  <div class="donut-wrap">
+    ${donut(r.sectors, r.total)}
+    <div>${breakdown(r.sectors, r.total)}</div>
+  </div>
+  ${r.raw.members > 1 ? `<p class="muted" style="margin-top:18px">주거 면적과 전기·난방은 가구원 ${r.raw.members}명으로 나눈 1인분입니다.</p>` : ``}
+  <p class="muted" style="margin-top:22px">가장 큰 몫은 ${SECTORS[top[0]].name}입니다 (${fmt(top[1])}톤, ${Math.round(top[1]/r.total*100)}%).</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-calcback>이전</button>
+    <button class="btn" data-go="${r.under ? "social" : "actions"}">다음</button>
+  </div>
+  <div class="btn-row" style="margin-top:10px">
+    <button class="btn ghost" data-save-image="result">이미지로 저장</button>
+    <button class="btn ghost" data-csv>기록 파일 받기</button>
+  </div>
+  <div style="margin-top:12px"><button class="linkish" data-recalc>처음부터 다시 계산하기</button></div>`;
+}
+
+/* ---------- 사회적 기초 계산기 (5.9톤 미만) ---------- */
+function scSocial(){
+  const sel = S.social || [];
+  return `
+  <p class="kicker">사회적 기초 확인</p>
+  <h1>생태적 한계선은<br>넘지 않았습니다.</h1>
+  <p class="lede">2030년 한국의 1.5℃ 라이프스타일 목표인 연간 ${fmt(CONFIG.TARGET_2030)}톤 이하를 배출하고 계십니다.</p>
+  <p class="note">배출량이 낮다는 것이 곧 좋은 삶을 뜻하지는 않습니다.
+  혹시 생활에 꼭 필요한 부분이 부족해서 낮은 것은 아닌지 함께 살펴봅니다.
+  해당하는 것이 있다면 모두 골라주세요. 없으면 그냥 넘어가셔도 됩니다.</p>
+  ${SOCIAL_FOUNDATION.map(g=>`
+    <div class="logblock">
+      <h3 style="color:${SECTORS[g.sector].color}">${SECTORS[g.sector].name}</h3>
+      <div class="chips" style="margin-top:10px">
+        ${g.items.map(it=>`<button class="chip" data-social="${esc(it)}"
+          aria-pressed="${sel.includes(it)}">${esc(it)}</button>`).join("")}
+      </div>
+    </div>`).join("")}
+  <div class="btn-row">
+    <button class="btn ghost" data-go="result">이전</button>
+    <button class="btn" data-go="twoweek">다음</button>
+  </div>
+  ${sel.length ? `<p class="muted" style="margin-top:14px">${sel.length}개를 고르셨습니다.
+    이 항목들은 개인의 선택이 아니라 사회가 갖춰야 할 조건에 가깝습니다.</p>` : ``}`;
+}
+
+/* ---------- 정책 3가지 선택 (7일차 / 14일차 두 번) ---------- */
+function policyKey(){ return S.policyRound === 2 ? "policies2" : "policies"; }
+function scPolicy(){
+  const r = calculate();
+  const list = r.under ? POLICIES_SOCIAL : POLICIES_REDUCE;
+  const round2 = S.policyRound === 2;
+  const sel = S[policyKey()] || [];
+  const first = S.policies || [];
+  return `
+  <p class="kicker">${round2 ? "2주를 마치며" : CONFIG.MIDPOINT_DAY + "일차"}</p>
+  <h1>${round2 ? "지금은 어떤 정책이<br>필요하다고 생각하시나요?"
+               : "직접 해보니<br>무엇이 필요하던가요?"}</h1>
+  <p class="lede">${round2
+    ? "2주를 모두 겪은 지금, 다시 골라주세요. 처음과 달라져도 좋습니다. 그 변화가 이 실험의 결과입니다."
+    : (r.under ? "부족한 생활 조건을 채우기 위해 필요한 정책 3가지를 고르세요."
+               : "일주일 동안 실천해보며 느낀, 개인의 노력만으로는 어려웠던 부분을 떠올려 정책 3가지를 고르세요.")}</p>
+  ${round2 && first.length ? `
+    <div class="card" style="margin-top:20px;padding:14px 16px">
+      <div class="muted" style="margin-bottom:6px">${CONFIG.MIDPOINT_DAY}일차에 고르셨던 것</div>
+      ${first.map(x=>`<div style="font-size:14px">· ${esc(x)}</div>`).join("")}
+    </div>` : ``}
+  <div class="chips" style="margin-top:24px">
+    ${list.map(x=>{
+      const on = sel.includes(x);
+      const locked = !on && sel.length >= 3;
+      return `<button class="chip${locked?" locked":""}" data-policy="${esc(x)}"
+        aria-pressed="${on}">${esc(x)}</button>`;
+    }).join("")}
+  </div>
+  <div class="pickbar">
+    <div class="cnt">${sel.length} / 3 선택${sel.length===3?" — 선택이 끝났습니다":""}</div>
+    ${S.policyWarn?`<div class="warn" style="margin-bottom:9px">이미 3개를 골랐습니다. 바꾸려면 먼저 하나를 해제해주세요.</div>`:``}
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" data-go="${round2 ? "final" : "midpoint"}" style="flex:1">이전</button>
+      <button class="btn" data-policy-done style="flex:2">${round2 ? "최종 결과 보기" : "8일차 기록 시작하기"}</button>
+    </div>
+  </div>`;
+}
+
+/* ---------- ⑥ 격차를 행동으로 ---------- */
+function rankedActions(onlyTwoWeek){
+  const r = calculate();
+  return ACTIONS.filter(a => !onlyTwoWeek || a.twoWeek)
+                .map(a=>({ a, p: Math.max(0, a.potential(r) || 0) }))
+                .sort((x,y)=>y.p-x.p);
+}
+function potTag(p){
+  if(p >= 0.45) return `<span class="tag hi">감축 잠재력 높음</span>`;
+  if(p >= 0.18) return `<span class="tag mid">감축 잠재력 중간</span>`;
+  return `<span class="tag">생활실험 추천</span>`;
+}
+function scActions(){
+  const r = calculate();
+  const list = rankedActions().slice(0,6);
+  return `
+  <h1>${r.under ? "이미 낮은 곳과,<br>더 실험해볼 수 있는 곳" : fmt(r.gap)+"톤의 차이,<br>어디에서 줄여볼 수 있을까요?"}</h1>
+  <p class="lede">${r.under
+    ? "지금의 생활을 유지하면서, 조건이 바뀌면 더 해볼 수 있는 행동을 함께 살펴봅니다."
+    : "계산 결과를 바탕으로, 당신의 생활에서 변화의 가능성이 큰 순서대로 정리했습니다."}</p>
+  <div style="margin:28px 0 8px">
+    ${list.map(({a,p},i)=>`
+      <div class="act" style="cursor:default">
+        <div class="act-top">
+          <div>
+            <div class="act-name">${i+1}. ${esc(a.name)}</div>
+            <div class="act-desc">${SECTORS[a.sector].name} · ${esc(a.desc)}</div>
+          </div>
+          ${potTag(p)}
+        </div>
+      </div>`).join("")}
+  </div>
+  <hr class="hr">
+  <p class="note">${fmt(Math.max(r.gap,0))}톤을 2주 만에 줄이자는 이야기가 아닙니다.
+  2주 살기는 연간 목표를 달성하는 프로그램이 아닙니다.</p>
+  <p style="margin-top:18px">2주의 목적은 ${r.under
+    ? `<b>지금의 낮은 배출 생활을 무엇이 가능하게 하고 있는지, 또 어떤 부분은 더 나아가기 어려운지를 직접 확인해보는 것</b>입니다.
+       이미 목표선 안에 계시므로 배출량을 더 줄이는 것이 목적이 아닙니다.`
+    : `<b>${fmt(CONFIG.TARGET_2030)}톤 생활이 가능하려면 나의 생활에서 무엇을 바꿀 수 있고,
+       무엇은 개인의 노력만으로 바꾸기 어려운지를 직접 실험해보는 것</b>입니다.`}</p>
+  <p class="muted">배출량을 목표치까지 맞추는 것이 아니라, 그 생활이 지금 조건에서 가능한지를 확인하는 것이 2주의 목적입니다.</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="result">이전</button>
+    <button class="btn" data-go="twoweek">다음</button>
+  </div>`;
+}
+
+/* ---------- ⑦ 2주 살기 진입 ---------- */
+function scTwoweek(){
+  return `
+  <h1>${fmt(CONFIG.TARGET_2030)}톤의 삶을<br>2주 동안 미리 살아봅니다.</h1>
+  <p class="lede">2주 만에 ${fmt(CONFIG.TARGET_2030)}톤을 만드는 것이 목표는 아닙니다.</p>
+  <p class="lede">앞으로 필요한 생활변화를 직접 시도해보고, 어떤 선택은 가능했고
+  어떤 선택은 교통, 주거, 시간, 비용 같은 조건 때문에 어려웠는지 확인합니다.</p>
+  <hr class="hr">
+  <h3>기록은 이렇게 합니다</h3>
+  <div class="chg" style="margin-top:8px">
+    <div class="chg-row"><span class="chg-name">먹거리와 소비</span><span class="chg-val">참가자 모두 매일 기록</span></div>
+    <div class="chg-row"><span class="chg-name">내가 고른 실천</span><span class="chg-val">공통 기록과 자동 연동</span></div>
+    <div class="chg-row"><span class="chg-name">이동·에너지 실천</span><span class="chg-val">고른 사람만 추가 기록</span></div>
+    <div class="chg-row"><span class="chg-name">어려웠던 이유</span><span class="chg-val">그날그날 함께 기록</span></div>
+  </div>
+  <p class="muted" style="margin-top:16px">같은 행동을 두 번 입력하지 않습니다.
+  먹거리·소비 실천을 골랐다면 공통 기록이 곧 그 실천의 기록이 됩니다.</p>
+  <p class="note" style="margin-top:16px">이미 하고 있는 일은 새로운 실천이 아닙니다.<br>
+  평소에 채식을 하고 있다면 ‘고기 없는 식사 늘리기’는 고르지 마세요.
+  지금까지 해보지 않았거나, 해보려다 잘 안 됐던 것을 고르는 편이 2주 동안 더 많은 것을 알게 해줍니다.</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="actions">이전</button>
+    <button class="btn" data-go="select">나의 실천 3개 고르기</button>
+  </div>`;
+}
+
+/* ---------- ⑧ 실천 3개 선택 ---------- */
+function scSelect(){
+  const ranked = rankedActions(true);
+  const n = S.picked.length, need = CONFIG.ACTIONS_TO_PICK;
+  return `
+  <h1>2주 동안 실험할<br>행동 ${need}개를 고릅니다.</h1>
+  <p class="lede">감축 잠재력이 큰 순서로 보여드리지만, 지금 생활에서 실제로 해볼 만한 것을 고르는 편이 좋습니다.
+  해보고 안 되는 이유를 알아내는 것도 이 2주의 목적입니다.</p>
+  <div style="margin:26px 0 0">
+    ${ranked.map(({a,p})=>{
+      const on = S.picked.includes(a.id);
+      const locked = !on && S.picked.length >= need;
+      return `<button class="act${locked?" locked":""}" data-pick="${a.id}" aria-pressed="${on}">
+        <div class="act-top">
+          <div>
+            <div class="act-name">${esc(a.name)}</div>
+            <div class="act-desc">${esc(a.desc)}</div>
+            <div class="act-desc" style="margin-top:5px;color:var(--ink-2)">
+              ${a.track==="common" ? "먹거리·소비 공통 기록과 자동 연동" : "매일 간단한 추가 기록"}
+            </div>
+          </div>
+          ${potTag(p)}
+        </div>
+      </button>`;
+    }).join("")}
+  </div>
+  ${n ? `<div style="margin-top:6px"><button class="linkish" data-clearpicks>선택 모두 지우기</button></div>` : ``}
+  <div class="pickbar">
+    <div class="cnt">${n} / ${need} 선택${n===need?" — 선택이 끝났습니다" : ""}</div>
+    ${S.pickWarn ? `<div class="warn" style="margin-bottom:9px">이미 ${need}개를 골랐습니다. 다른 것을 고르려면 먼저 선택한 것 중 하나를 눌러 해제해주세요.</div>` : ``}
+    <div style="display:flex;gap:10px">
+      <button class="btn ghost" data-go="twoweek" style="flex:1">이전</button>
+      <button class="btn" data-go="log" style="flex:2" ${n===need?"":"disabled"}>14일 기록 시작하기</button>
+    </div>
+  </div>`;
+}
+/* ---------- ⑨ 14일 기록 ---------- */
+function pickedActions(){ return ACTIONS.filter(a=>S.picked.includes(a.id)); }
+function hasTrack(t){ return pickedActions().some(a=>a.track===t); }
+function hasAction(id){ return S.picked.includes(id); }
+
+function chipRow(field, opts, cur){
+  return `<div class="chips">${opts.map((o,i)=>
+    `<button class="chip" data-log="${field}" data-v="${i}" aria-pressed="${cur===i}">${esc(o)}</button>`).join("")}</div>`;
+}
+/* 그날 반드시 채워야 하는 항목 */
+function requiredFields(){
+  const req = ["meat","eatout","coffee","buy"];
+  if(hasTrack("car")) LOG_MODES.forEach(m=>req.push(m.f));
+  if(hasAction("heat30")) req.push("heat");
+  if(hasAction("power30")) req.push("power");
+  if(hasTrack("home")) req.push("ai");
+  if(hasTrack("leisure")) req.push("screen");
+  return req;
+}
+function missingFields(d){
+  const l = S.logs[d] || {};
+  return requiredFields().filter(f => l[f] === undefined);
+}
+function scLog(){
+  const d = S.day, log = S.logs[d] || {};
+  const miss = missingFields(d);
+  const doneCount = Object.values(S.logs).filter(l=>l && l._done).length;
+  const acts = pickedActions();
+  return `
+  <div class="sect-head" style="justify-content:space-between;margin-bottom:16px">
+    <h2>${d+1}일차 기록</h2>
+    <span class="muted">${doneCount} / ${CONFIG.PROGRAM_DAYS}일 기록됨</span>
+  </div>
+  <div class="daybar">
+    ${Array.from({length:CONFIG.PROGRAM_DAYS},(_,i)=>{
+      const done = S.logs[i] && S.logs[i]._done;
+      const cell = `<button data-day="${i}" class="${done?"done":""} ${i===d?"cur":""}">${i+1}${done?"<i></i>":""}</button>`;
+      // 7일차와 8일차 사이에 중간 결과 칸을 둡니다.
+      return i === CONFIG.MIDPOINT_DAY-1
+        ? cell + `<button data-go="midpoint" class="mid" title="중간 결과 보기">중간<br>결과</button>`
+        : cell;
+    }).join("")}
+  </div>
+
+  ${doneCount >= CONFIG.MIDPOINT_DAY ? `
+  <button class="midbanner" data-go="midpoint">
+    <span class="midbanner-t">중간 결과 보기</span>
+    <span class="midbanner-s">${doneCount}일까지 기록한 변화를 그래프로 확인합니다</span>
+    <span class="midbanner-a">→</span>
+  </button>` : ``}
+
+  <div class="card" style="margin-bottom:20px;padding:14px 16px">
+    <div class="muted" style="margin-bottom:6px">이번 2주에 실험 중인 행동</div>
+    ${acts.map(a=>`<div style="font-size:14.5px;font-weight:500">· ${esc(a.name)}
+      <span style="font-weight:400;color:var(--ink-3);font-size:12.5px">
+      ${a.track==="common"?"(아래 공통 기록으로 자동 반영)":"(아래 추가 기록)"}</span></div>`).join("")}
+  </div>
+
+  <div class="logblock">
+    <h3>먹거리 <em>모든 참가자 공통 기록</em></h3>
+    <p class="q-help" style="margin:6px 0 8px">오늘 고기가 들어간 끼니는 몇 번이었나요?</p>
+    ${chipRow("meat", ["0끼","1끼","2끼","3끼 이상"], log.meat)}
+    <p class="q-help" style="margin:14px 0 8px">외식이나 배달음식은 몇 번이었나요?</p>
+    ${chipRow("eatout", ["없음","1번","2번 이상"], log.eatout)}
+    <p class="q-help" style="margin:14px 0 8px">커피는 몇 잔 마셨나요?</p>
+    ${chipRow("coffee", ["0잔","1잔","2잔","3잔 이상"], log.coffee)}
+  </div>
+
+  <div class="logblock">
+    <h3>소비 <em>모든 참가자 공통 기록</em></h3>
+    <p class="q-help" style="margin:6px 0 8px">오늘 새로 산 물건은 몇 개인가요?</p>
+    ${chipRow("buy", ["0개","1개","2개","3개 이상"], log.buy)}
+  </div>
+
+  ${hasTrack("car") ? `
+  <div class="logblock">
+    <h3>교통 <em>고른 실천에 따른 추가 기록</em></h3>
+    <p class="q-help" style="margin:6px 0 10px">오늘 각 교통수단을 이용한 시간을 골라주세요.
+    계산기에 답한 평소 이용 시간과 비교해 감축량을 계산합니다.</p>
+    ${LOG_MODES.map(m=>`
+      <p class="q-help" style="margin:12px 0 7px">${esc(m.label)}</p>
+      ${chipRow(m.f, ["타지 않음","30분","1시간","2시간","3시간 이상"], log[m.f])}`).join("")}
+  </div>` : ``}
+
+  ${hasTrack("home") ? `
+  <div class="logblock">
+    <h3>주거 <em>고른 실천에 따른 추가 기록</em></h3>
+    ${hasAction("heat30") ? `
+      <p class="q-help" style="margin:6px 0 8px">오늘 난방은 어떻게 썼나요?</p>
+      ${chipRow("heat", ["평소대로","조금 줄임","30% 넘게 줄임"], log.heat)}` : ``}
+    ${hasAction("power30") ? `
+      <p class="q-help" style="margin:14px 0 8px">전기 사용을 줄이는 실천을 했나요?</p>
+      ${chipRow("power", ["아니오","네"], log.power)}
+      ${log.power === 1 ? `
+        <p class="q-help" style="margin:12px 0 7px">어떤 실천을 했는지 적어주세요. (선택)</p>
+        <textarea class="freetext" data-doing="power" rows="2"
+          placeholder="예) 안 쓰는 플러그를 모두 뽑았다. 세탁기를 모아서 한 번만 돌렸다."
+          >${esc(log.powerNote || "")}</textarea>` : ``}` : ``}
+    <p class="q-help" style="margin:14px 0 8px">오늘 인공지능 프로그램을 사용했나요?</p>
+    ${chipRow("ai", ["쓰지 않음","평소보다 적게","평소대로"], log.ai)}
+  </div>` : ``}
+
+  ${hasTrack("leisure") ? `
+  <div class="logblock">
+    <h3>여가 <em>고른 실천에 따른 추가 기록</em></h3>
+    <p class="q-help" style="margin:6px 0 8px">동영상·게임 시간을 줄이거나 가까운 곳에서 여가를 보냈나요?</p>
+    ${chipRow("screen", ["아니오","네"], log.screen)}
+    ${log.screen === 1 ? `
+      <p class="q-help" style="margin:12px 0 7px">어떤 실천을 했는지 적어주세요. (선택)</p>
+      <textarea class="freetext" data-doing="screen" rows="2"
+        placeholder="예) 저녁에 영상 대신 산책을 했다."
+        >${esc(log.screenNote || "")}</textarea>` : ``}
+  </div>` : ``}
+
+  <div class="logblock">
+    <h3>오늘 어려웠던 점</h3>
+    <p class="q-help" style="margin:6px 0 8px">해당되는 것을 모두 고르세요. 이 기록이 마지막 화면에서 사회적 조건으로 이어집니다.</p>
+    <div class="chips">
+      ${BARRIERS.map(b=>`<button class="chip" data-barrier="${b.id}"
+        aria-pressed="${(log.barriers||[]).includes(b.id)}">${esc(b.label)}</button>`).join("")}
+    </div>
+    <p class="q-help" style="margin:16px 0 8px">더 하고 싶은 이야기가 있다면 자유롭게 적어주세요. (선택)</p>
+    <textarea class="freetext" data-note rows="3"
+      placeholder="예) 회식이 잡혀서 채식을 하려다 못 했다. 아이 하원 시간 때문에 차를 두고 나갈 수 없었다."
+      >${esc(log.note || "")}</textarea>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn ghost" data-daynav="-1">${d===0 ? "실천 다시 고르기" : "이전 날"}</button>
+    <button class="btn" data-savelog ${miss.length?"disabled":""}>${
+      d === CONFIG.PROGRAM_DAYS-1 ? (log._done ? "저장됨 · 결과 보기" : "저장하고 결과 보기")
+                                  : (log._done ? "저장됨 · 다음 날" : "이 날 기록 저장")}</button>
+  </div>
+  ${miss.length ? `<div class="warn" style="margin-top:12px">아직 ${miss.length}개 항목이 비어 있습니다.
+    기억나는 대로라도 모두 채워야 다음 날로 넘어갈 수 있습니다.</div>` : ``}
+  <div class="saved" id="savedMsg"></div>
+
+  <hr class="hr">
+  <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
+    <button class="linkish" data-demo="days">시연용 14일 기록 자동 채우기</button>
+    <button class="linkish" data-go="final" ${doneCount?"":"disabled style=\"opacity:.4\""}>
+      ${doneCount>=CONFIG.PROGRAM_DAYS ? "14일 결과 보기" : "지금까지의 결과 보기"}</button>
+  </div>`;
+}
+
+/* ---------- 7일차 중간 결과 ---------- */
+function scMidpoint(){
+  const P = programSummary(), r = P.res;
+  const scale = CONFIG.PROGRAM_DAYS / (P.days || 1);
+  return `
+  <p class="kicker">${CONFIG.MIDPOINT_DAY}일차까지의 기록</p>
+  <h1>절반이 지났습니다.</h1>
+  <p class="lede">남은 일주일을 시작하기 전에, 지금까지의 변화를 한 번 보고 갑니다.</p>
+  <div class="stat hero">
+    <div class="stat-label">${P.days}일 동안 줄어든 양</div>
+    <div class="stat-val"><b>${fmt(P.totalKg,1)}</b><span>킬로그램</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-label">이 속도가 1년간 이어진다면</div>
+    <div class="stat-val"><b>${fmt(P.annualT,1)}</b><span>톤 감축 가능성</span></div>
+  </div>
+  ${pathChart(r.total, P.after, CONFIG.TARGET_2030)}
+  <p class="note" style="margin-top:22px">아직 절반입니다. 남은 일주일은 잘 되는 것을 이어가는 것보다,
+  <b>잘 안 되는 것이 왜 안 되는지</b>를 살펴보는 데 써보세요. 그 이유가 마지막 화면에서 가장 중요한 기록이 됩니다.</p>
+  ${P.topBarriers.length ? `
+    <p class="kicker" style="margin-top:28px">지금까지 기록된 어려움</p>
+    ${P.topBarriers.slice(0,3).map(([id,c])=>{
+      const B = BARRIERS.find(x=>x.id===id);
+      return `<div class="bar-item"><div class="bar-a">${esc(B.label)}<span>${c}일</span></div></div>`;
+    }).join("")}` : ``}
+  <div class="btn-row">
+    <button class="btn ghost" data-go="log">기록으로 돌아가기</button>
+    <button class="btn" data-policy-round="1">필요한 정책 고르기</button>
+  </div>`;
+}
+
+/* ---------- ⑩ 최종 결과 ---------- */
+function scFinal(){
+  document.body.classList.add("bold-nums");
+  submitResults("2주완료");
+  const P = programSummary(), r = P.res, b = P.base, n = P.days || 1;
+  const T = CONFIG.TARGET_2030;
+  const after = P.after;
+  const remain = Math.max(0, after - T);
+  const scale = CONFIG.PROGRAM_DAYS / n;   // 기록한 날을 14일로 환산
+
+  const rows = [];
+  const D = CARBON_FACTORS.daily;
+  rows.push(["육식 끼니", Math.round(b.meatMealsDay*n*scale), Math.round(P.sum.meat*scale), "끼"]);
+  rows.push(["외식·배달", Math.round(b.eatOutDay*n*scale), Math.round(P.sum.eatout*scale), "회"]);
+  rows.push(["커피", Math.round(b.coffeeDay*n*scale), Math.round(P.sum.coffee*scale), "잔"]);
+  rows.push(["새로 산 물건", Math.round(b.clothesDay*n*scale*10)/10, Math.round(P.sum.buy*scale), "개"]);
+  if(hasTrack("car"))
+    rows.push(["승용차 이용", Math.round(b.carHoursDay*n*scale), Math.round(P.sum.carhr*scale), "시간"]);
+  if(hasAction("heat30")) rows.push(["난방을 줄인 날", 0, Math.round(P.sum.heatDays*scale), "일", true]);
+  if(hasAction("power30")) rows.push(["전기를 아낀 날", 0, Math.round(P.sum.powerDays*scale), "일", true]);
+  if(hasTrack("leisure")) rows.push(["화면 시간을 줄인 날", 0, Math.round(P.sum.screenDays*scale), "일", true]);
+
+  const barrierCards = P.topBarriers.slice(0,3).map(([id,c])=>{
+    const B = BARRIERS.find(x=>x.id===id);
+    return `<div class="bar-item">
+      <div class="bar-q">${esc(B.ask)}</div>
+      <div class="bar-a">→ ${esc(B.social)}<span>${c}일 기록됨</span></div>
+    </div>`;
+  }).join("");
+
+  return `
+  <h1>2주가 지났습니다.</h1>
+  <p class="lede">줄인 양을 세는 것으로 끝내지 않습니다. 시작할 때의 나, 실제로 바뀐 행동,
+  그리고 이 생활이 이어졌을 때의 의미를 함께 봅니다.</p>
+
+  <hr class="hr">
+  <p class="kicker">시작할 때의 나</p>
+  <div class="stat">
+    <div class="stat-label">연간 예상 라이프스타일 탄소발자국</div>
+    <div class="stat-val"><b>${fmt(r.total)}</b><span>톤</span></div>
+  </div>
+  ${budgetLine(r.total)}
+
+  <hr class="hr">
+  <p class="kicker">2주 동안 실제로 바뀐 행동</p>
+  <div class="chg">
+    ${rows.map(([name,base,now,unit,plain])=>`
+      <div class="chg-row">
+        <span class="chg-name">${esc(name)}</span>
+        <span class="chg-val">${plain
+          ? `<b class="dn">${now}${unit}</b>`
+          : `<s>${base}${unit}</s> &nbsp;→&nbsp; <b class="${now<base?"dn":""}">${now}${unit}</b>`}</span>
+      </div>`).join("")}
+  </div>
+  <p class="muted">${n}일치 기록을 ${CONFIG.PROGRAM_DAYS}일 기준으로 환산했습니다.
+  ‘이전’은 계산기에 답한 평소 생활에서 추정한 값입니다.</p>
+  <div class="stat" style="margin-top:20px">
+    <div class="stat-label">2주 동안 줄어든 양</div>
+    <div class="stat-val"><b class="num">${fmt(P.totalKg*scale, 1)}</b><span>킬로그램</span></div>
+  </div>
+
+  <hr class="hr">
+  <p class="kicker">이 생활을 지속했을 때의 의미</p>
+  <h2 style="margin-bottom:18px">이번 2주 동안 바뀐 생활이 1년간 지속된다면<br>
+  약 <span style="color:var(--within)">${fmt(P.annualT,1)}톤</span>을 감축할 수 있습니다.</h2>
+  ${pathChart(r.total, after, T)}
+  ${remain > 0.05 ? `
+    <h2 style="margin-top:34px">1.5℃ 라이프스타일 목표에 ${fmt(remain)}톤이 모자랍니다.</h2>
+    <p class="note">남은 차이는 모두 개인의 노력으로 줄이기 힘든 것들이 많습니다.</p>
+  ` : `
+    <h2 style="margin-top:34px">2030년 목표선 안에 들어왔습니다.</h2>
+    <p class="note">이 생활을 가능하게 한 조건이 무엇이었는지 함께 기록해두면,
+    다른 사람에게도 같은 선택지를 만들 수 있습니다.</p>
+  `}
+
+  <hr class="hr">
+  <p class="kicker">2주 동안 기록된 장벽</p>
+  ${barrierCards || `<p class="muted">어려웠던 점으로 기록된 항목이 없습니다.</p>`}
+
+  ${P.notes.length ? `
+    <p class="kicker" style="margin-top:28px">2주 동안 직접 적어주신 이야기</p>
+    ${P.notes.map(n=>`<div class="bar-item"><div class="bar-q">${n.day}일차</div>
+      <div class="bar-q" style="color:var(--ink);margin-top:3px">${esc(n.text)}</div></div>`).join("")}
+  ` : ``}
+
+  ${(S.policies2||S.policies||[]).length ? `
+    <p class="kicker" style="margin-top:28px">내가 고른 정책</p>
+    ${(S.policies2||S.policies).map(x=>`<div class="bar-item"><div class="bar-a">${esc(x)}</div></div>`).join("")}
+  ` : ``}
+  ${!(S.policies2||[]).length ? `
+    <div style="margin-top:18px"><button class="btn ghost" data-policy-round="2">2주를 마치고 다시 정책 고르기</button></div>
+  ` : ``}
+
+  <p style="margin-top:28px;font-size:18px;line-height:1.7">1.5℃ 라이프스타일을 가능하게 하려면<br>
+  개인의 변화와 함께 도시와 사회의 변화도 필요합니다.</p>
+  <p style="margin-top:14px">다음과 같은 행동으로 도시와 사회의 변화에 참여할 수 있습니다.</p>
+  <div class="chg" style="margin-top:8px">
+    <div class="chg-row"><span class="chg-name">우리 지역의 탄소중립 정책 알아보기</span></div>
+    <div class="chg-row"><span class="chg-name">기후시민회의에 참여하기</span></div>
+    <div class="chg-row"><span class="chg-name">주민자치회, 각종 모임 등에서 1.5℃ 라이프스타일 2주 살기 같이 하기</span></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="btn ghost" data-csv>기록 파일 받기</button>
+    <button class="btn" data-save-image="final">이미지로 저장</button>
+  </div>
+  <p class="muted" style="margin-top:12px">이미지로 저장됩니다. 저장이 안 되는 기기에서는 화면을 캡처해주세요.</p>`;
+}
+/* ============================================================
+   G2. 결과 이미지 저장 (외부 라이브러리 없이 캔버스로 직접 그립니다)
+   ============================================================ */
+function drawResultCard(){
+  const r = calculate(), T = CONFIG.TARGET_2030;
+  const isFinal = S.screen === "final";
+  const P = isFinal ? programSummary() : null;
+  const W = 1080, H = isFinal ? 1900 : 1180;
+  const c = document.createElement("canvas");
+  c.width = W; c.height = H;
+  const x = c.getContext("2d");
+  const F = '"IBM Plex Sans KR", sans-serif';
+  const INK="#14302B", DIM="#6E837D", RULE="#C9D2C6", TRACK="#DCE2D8",
+        OVER="#9E2A3B", WIN="#2F6F55", MID="#2F5E78";
+  const cols = { food:"#4E7B4B", consumption:"#9A7B3F", transport:"#2F5E78",
+                 housing:"#7A4A5C", leisure:"#5E6B6E" };
+  x.fillStyle = "#EDF0EA"; x.fillRect(0,0,W,H);
+  const L = 80, BW = W - 160;
+  const rule = y => { x.strokeStyle = RULE; x.lineWidth = 1;
+    x.beginPath(); x.moveTo(L,y); x.lineTo(W-L,y); x.stroke(); };
+
+  let y = 96;
+  x.fillStyle = DIM; x.font = `400 28px ${F}`;
+  x.fillText("1.5℃ 라이프스타일 2주 살기", L, y);
+  y += 70;
+  x.fillStyle = INK; x.font = `600 50px ${F}`;
+  x.fillText(isFinal ? "2주 살기 결과" : "나의 연간 탄소발자국", L, y);
+
+  /* 1층 — 시작할 때의 나 */
+  y += 84;
+  x.fillStyle = DIM; x.font = `500 26px ${F}`;
+  x.fillText(isFinal ? "시작할 때의 나" : "나의 예상 연간 라이프스타일 탄소발자국", L, y);
+  y += 96;
+  x.fillStyle = r.total > T ? OVER : WIN; x.font = `600 108px ${F}`;
+  const tot = fmt(r.total);
+  x.fillText(tot, L, y);
+  const totW = x.measureText(tot).width;      // 큰 글씨 폭을 먼저 잰 뒤 폰트를 바꿉니다
+  x.fillStyle = DIM; x.font = `400 34px ${F}`;
+  x.fillText("톤", L + totW + 24, y);
+
+  /* 예산선 */
+  y += 60;
+  const max = Math.max(CONFIG.KOREA_AVG, r.total*1.08, T*1.6);
+  const px = v => BW * Math.min(1, v/max);
+  x.fillStyle = INK; x.font = `600 24px ${F}`;
+  x.fillText(`1.5℃ 한계선 ${fmt(T)}`, Math.max(L, L + px(T) - 92), y);
+  y += 18;
+  x.fillStyle = TRACK; x.fillRect(L, y, BW, 32);
+  x.fillStyle = WIN;   x.fillRect(L, y, px(Math.min(r.total,T)), 32);
+  if(r.total > T){ x.fillStyle = OVER; x.fillRect(L+px(T), y, px(r.total)-px(T), 32); }
+  x.fillStyle = INK; x.fillRect(L + px(T) - 3, y - 12, 6, 56);
+  y += 76;
+  x.fillStyle = DIM; x.font = `400 24px ${F}`;
+  x.fillText(`한국 평균 ${fmt(CONFIG.KOREA_AVG)}톤`, W - L - 150, y);
+
+  /* 분야별 */
+  y += 40; rule(y); y += 54;
+  x.fillStyle = INK; x.font = `600 32px ${F}`;
+  x.fillText("분야별 배출량", L, y);
+  const ent = SECTOR_KEYS.map(k=>[k, r.sectors[k]]).sort((a,b)=>b[1]-a[1]);
+  const mx = ent[0][1] || 1;
+  ent.forEach(([k,v])=>{
+    y += 58;
+    x.fillStyle = INK; x.font = `400 27px ${F}`;
+    x.fillText(SECTORS[k].name, L, y + 21);
+    x.fillStyle = TRACK; x.fillRect(L+150, y, 560, 26);
+    x.fillStyle = cols[k]; x.fillRect(L+150, y, 560 * (v/mx), 26);
+    x.fillStyle = DIM; x.font = `400 25px ${F}`;
+    x.fillText(`${fmt(v)}톤 · ${Math.round(v/r.total*100)}%`, L+730, y+22);
+  });
+
+  if(isFinal){
+    /* 2층 — 바뀐 행동 */
+    y += 66; rule(y); y += 56;
+    x.fillStyle = INK; x.font = `600 32px ${F}`;
+    x.fillText("2주 동안 실제로 바뀐 행동", L, y);
+    const b = P.base, n = P.days || 1, sc = CONFIG.PROGRAM_DAYS / n;
+    const rows = [
+      ["육식 끼니", Math.round(b.meatMealsDay*n*sc), Math.round(P.sum.meat*sc), "끼"],
+      ["외식·배달", Math.round(b.eatOutDay*n*sc),    Math.round(P.sum.eatout*sc), "회"],
+      ["커피",      Math.round(b.coffeeDay*n*sc),    Math.round(P.sum.coffee*sc), "잔"]
+    ];
+    if(hasTrack("car"))
+      rows.push(["승용차 이용", Math.round(b.carHoursDay*n*sc), Math.round(P.sum.carhr*sc), "시간"]);
+    rows.forEach(([nm,was,now,u])=>{
+      y += 54;
+      x.fillStyle = INK; x.font = `400 27px ${F}`; x.fillText(nm, L, y);
+      x.fillStyle = DIM; x.font = `400 27px ${F}`;
+      const wt = `${was}${u}`;
+      x.fillText(wt, L+420, y);
+      const wl = x.measureText(wt).width;
+      x.beginPath(); x.moveTo(L+420, y-9); x.lineTo(L+420+wl, y-9); x.strokeStyle = DIM; x.stroke();
+      x.fillText("→", L+420+wl+22, y);
+      x.fillStyle = now < was ? WIN : INK; x.font = `600 27px ${F}`;
+      x.fillText(`${now}${u}`, L+420+wl+70, y);
+    });
+    y += 54;
+    x.fillStyle = DIM; x.font = `400 26px ${F}`;
+    x.fillText(`2주 동안 줄어든 양  ${fmt(P.totalKg,1)} 킬로그램`, L, y);
+
+    /* 3층 — 지속했을 때 */
+    y += 46; rule(y); y += 56;
+    x.fillStyle = INK; x.font = `600 32px ${F}`;
+    x.fillText("이 생활을 지속했을 때", L, y);
+    y += 30;
+    const m2 = Math.max(CONFIG.KOREA_AVG, r.total*1.08, T*1.6);
+    const p2 = v => BW * Math.min(1, v/m2);
+    [["현재", r.total, OVER], ["1년간 지속하면", P.after, MID], ["2030년 목표", T, WIN]]
+      .forEach(([lab,v,col])=>{
+        y += 40;
+        x.fillStyle = DIM; x.font = `400 24px ${F}`; x.fillText(lab, L, y);
+        x.fillStyle = col; x.font = `600 30px ${F}`;
+        const vt = `${fmt(v)}톤`;
+        x.fillText(vt, W - L - x.measureText(vt).width, y);
+        y += 14;
+        x.fillStyle = TRACK; x.fillRect(L, y, BW, 26);
+        x.fillStyle = col;   x.fillRect(L, y, p2(v), 26);
+        x.fillStyle = INK;   x.fillRect(L + p2(T) - 2, y - 5, 4, 36);
+        y += 32;
+      });
+    y += 52;
+    x.fillStyle = INK; x.font = `600 30px ${F}`;
+    const remain = Math.max(0, P.after - T);
+    x.fillText(remain > 0.05
+      ? `1.5℃ 라이프스타일 목표에 ${fmt(remain)}톤이 모자랍니다.`
+      : `2030년 목표선 안에 들어왔습니다.`, L, y);
+    y += 46;
+    x.fillStyle = DIM; x.font = `400 25px ${F}`;
+    x.fillText("남은 차이는 모두 개인의 노력으로 줄이기 힘든 것들이 많습니다.", L, y);
+  }
+
+  const pf = S.profile || {};
+  x.fillStyle = DIM; x.font = `400 24px ${F}`;
+  x.fillText(`${pf.name ? pf.name + " · " : ""}${new Date().toLocaleDateString("ko-KR")}`, L, H - 56);
+  return c;
+}
+
+/* 결과 이미지를 화면에 띄우고, 가능한 모든 방법으로 저장을 돕습니다.
+   일부 미리보기 환경은 파일 내려받기를 막기 때문에
+   ① 내려받기 ② 새 탭에서 열기 ③ 길게 눌러 저장 세 가지를 모두 제공합니다. */
+function saveScreenImage(){
+  const c = drawResultCard();
+  const name = `1.5도라이프스타일_${S.screen==="final"?"2주결과":"탄소발자국"}_${new Date().toISOString().slice(0,10)}.png`;
+  const dataUrl = c.toDataURL("image/png");
+  openModal(`
+    <h2 style="margin-bottom:6px">결과 이미지</h2>
+    <p class="muted">이미지를 길게 누르면(컴퓨터는 오른쪽 클릭) 바로 저장할 수 있습니다.</p>
+    <img src="${dataUrl}" alt="결과 이미지" class="resultimg">
+    <div class="btn-row" style="margin-top:16px">
+      <button class="btn ghost" data-img-open>새 탭에서 열기</button>
+      <button class="btn" data-img-save>이미지 내려받기</button>
+    </div>
+    <p class="muted" id="imgMsg" style="margin-top:12px"></p>
+  `);
+  c.toBlob(blob=>{
+    if(!blob) return;
+    const url = URL.createObjectURL(blob);
+    const msg = document.getElementById("imgMsg");
+    const openBtn = document.querySelector("[data-img-open]");
+    const saveBtn = document.querySelector("[data-img-save]");
+    if(openBtn) openBtn.onclick = ()=>{
+      const w = window.open(url, "_blank");
+      if(!w && msg) msg.textContent = "새 탭이 차단되었습니다. 위 이미지를 길게 눌러 저장해주세요.";
+    };
+    if(saveBtn) saveBtn.onclick = async ()=>{
+      // 1) 모바일 공유 시트 (가능한 기기에서 가장 확실합니다)
+      try{
+        const file = new File([blob], name, { type:"image/png" });
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          await navigator.share({ files:[file], title:"1.5℃ 라이프스타일 결과" });
+          return;
+        }
+      }catch(e){}
+      // 2) 일반 내려받기
+      try{
+        const a = document.createElement("a");
+        a.href = url; a.download = name; a.rel = "noopener";
+        document.body.appendChild(a); a.click(); a.remove();
+        if(msg) msg.textContent = "저장이 시작되지 않으면 위 이미지를 길게 눌러 저장해주세요.";
+      }catch(e){
+        if(msg) msg.textContent = "이 환경에서는 내려받기가 막혀 있습니다. 위 이미지를 길게 눌러 저장해주세요.";
+      }
+    };
+  }, "image/png");
+}
+
+/* ============================================================
+   렌더 & 이벤트
+   ============================================================ */
+const VIEWS = { intro:scIntro, why:scWhy, profile:scProfile, calcIntro:scCalcIntro, calc:scCalc,
+                result:scResult, actions:scActions, twoweek:scTwoweek, select:scSelect,
+                social:scSocial, policy:scPolicy,
+                log:scLog, midpoint:scMidpoint, final:scFinal };
+
+function render(){
+  const fn = VIEWS[S.screen] || scIntro;
+  document.body.classList.remove("bold-nums");
+  $("#screens").innerHTML = `<section class="screen live">${fn()}</section>`;
+  renderRail();
+  syncFooterTools();
+}
+
+function openModal(html){
+  $("#modalBody").innerHTML = html;
+  $("#modal").classList.add("live");
+  document.body.style.overflow = "hidden";
+}
+function closeModal(){
+  $("#modal").classList.remove("live");
+  document.body.style.overflow = "";
+}
+
+function modalInstall(){
+  return `
+  <h2>홈 화면에 추가하기</h2>
+  <p class="muted">주소창 없이 앱처럼 열리고, 2주 동안 기록하러 들어오기가 훨씬 편해집니다.</p>
+  <h3 style="margin-top:22px">아이폰 (사파리)</h3>
+  <p style="font-size:15px">화면 아래쪽 <b>공유 버튼</b>(↑ 모양)을 누른 뒤,
+  목록을 내려 <b>‘홈 화면에 추가’</b>를 선택하고 오른쪽 위 <b>추가</b>를 누르세요.</p>
+  <h3 style="margin-top:22px">안드로이드 (크롬)</h3>
+  <p style="font-size:15px">오른쪽 위 <b>점 세 개 메뉴</b>를 누른 뒤
+  <b>‘홈 화면에 추가’</b> 또는 <b>‘앱 설치’</b>를 선택하세요.</p>
+  <p class="note" style="margin-top:20px">기록은 이 기기의 브라우저에만 저장됩니다.
+  다른 기기에서 열면 기록이 보이지 않으니, 2주 동안 같은 기기로 들어와주세요.</p>`;
+}
+
+function modalSettings(){
+  return `
+  <h2>시연 설정</h2>
+  <p class="muted">이 값들은 코드 상단 <b>CONFIG</b> 객체에 있습니다. 여기서 바꾸면 모든 화면의 계산이 즉시 다시 이뤄집니다.</p>
+  <div style="margin-top:20px">
+    <p class="q-title">2030년 1.5℃ 라이프스타일 목표 (TARGET_2030)</p>
+    <div class="opts two" style="margin-top:8px">
+      ${[4.6,5.0,5.4,5.9].map(v=>`<button class="opt" data-target="${v}"
+        aria-pressed="${CONFIG.TARGET_2030===v}">${fmt(v)}톤</button>`).join("")}
+    </div>
+    <p class="muted" style="margin-top:10px">현재 시연 기준값은 5.4입니다.
+    13.6 × 72% × 60% 산식(≈5.9t)과 혼용하지 않도록, 화면에 표시되는 목표는 항상 이 하나의 값을 따릅니다.</p>
+  </div>
+  <hr class="hr">
+  <p class="q-title">표시 테마</p>
+  <div class="opts two" style="margin-top:8px">
+    <button class="opt" data-theme="light" aria-pressed="${document.documentElement.getAttribute("data-theme")==="light"}">밝게</button>
+    <button class="opt" data-theme="dark" aria-pressed="${document.documentElement.getAttribute("data-theme")==="dark"}">어둡게</button>
+  </div>`;
+}
+
+/* 시연용 예시 응답 */
+const DEMO_ANSWERS = {
+  eatOut:5, diet:0, coffee:1, waste:1,
+  clothes:12, mend:2,
+  appliances:{ricecooker:1, fridge:1, aircon:1, tv:1, vacuum:1, washer:1, microwave:1},
+  devices:{phone:1, laptop:1, tablet:1},
+  pets:{cat:0, dog:0},
+  subway:2, bus:1.5, bike:0, ev:0, car:7, train:3, flight:5,
+  members:2, areaTotal:25, elec:2, heatType:0, heatCost:1, solar:0, insulation:0, ai:1,
+  leisureWays:["mobile","book"], ski:0, golf:0, stay:6
+};
+
+function fillDemoDays(){
+  for(let i=0;i<CONFIG.PROGRAM_DAYS;i++){
+    const late = i >= 4;                       // 며칠 지나며 자리잡는 흐름
+    const l = { _done:true, barriers:[] };
+    l.meat   = late ? (i%3===0 ? 0 : 1) : (i%2===0 ? 2 : 1);
+    l.eatout = (i%4===0) ? 1 : 0;
+    l.coffee = late ? 1 : 2;
+    l.buy    = (i%7===0) ? 1 : 0;
+    if(hasTrack("car")){
+      l.carhr    = late ? ((i%3===0)?1:2) : 2;     // 내연기관 승용차
+      l.evhr     = 0;
+      l.subwayhr = late ? 2 : 1;                   // 줄인 만큼 대중교통으로
+      l.bushr    = late ? 1 : 0;
+      l.bikehr   = late ? ((i%2===0)?1:0) : 0;
+    }
+    if(hasTrack("home"))     l.ai     = late ? 1 : 2;
+    if(hasAction("heat30"))  l.heat   = late ? (i%3===0?2:1) : 0;
+    if(hasAction("power30")){
+      l.power = late ? 1 : 0;
+      if(late && i%4===0) l.powerNote = "안 쓰는 플러그를 뽑고 조명을 절반만 켰다.";
+    }
+    if(hasTrack("leisure"))  l.screen = (i%3!==0) ? 1 : 0;
+    const pool = [];
+    if(hasTrack("car")) pool.push("transit");
+    if(hasAction("heat30")) pool.push("house");
+    pool.push("menu","time");
+    if(i%3===0) l.barriers.push(pool[i%pool.length]);
+    if(i%5===0) l.barriers.push("menu");
+    if(i%4===1) l.barriers.push("none");
+    S.logs[i] = l;
+  }
+  S.logs[3].note = "회식이 잡혀서 채식을 하려다 못 했다.";
+  S.logs[9].note = "아이 하원 시간 때문에 차를 두고 나갈 수 없었다.";
+}
+
+document.addEventListener("click", e => {
+  // 입력칸·선택상자를 누른 것은 화면 전환 동작으로 해석하지 않습니다.
+  const tag = e.target.tagName;
+  if(tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || tag === "LABEL") return;
+  const t = e.target.closest("[data-go],[data-modal],[data-q],[data-calcnext],[data-calcprev],"+
+    "[data-pick],[data-day],[data-log],[data-barrier],[data-savelog],[data-daynav],[data-demo],"+
+    "[data-recalc],[data-calcback],[data-restart],[data-target],[data-theme],[data-close],"+
+    "[data-skip-to-log],[data-policy-round],[data-save-image],[data-csv],[data-multi],[data-num],[data-count],"+
+    "[data-policy],[data-policy-done],[data-social],[data-pre],[data-clearpicks],[data-doing]");
+  if(!t) return;
+
+  if(t.hasAttribute("data-close")){ closeModal(); return; }
+
+  if(t.dataset.go){ closeModal(); go(t.dataset.go); return; }
+
+  if(t.dataset.modal === "basis"){ openModal(modalBasis()); return; }
+  if(t.dataset.modal === "install"){ openModal(modalInstall()); return; }
+
+  if(t.hasAttribute("data-skip-to-log")){
+    // 계산을 건너뛴 경우에도 실천 선택은 거치도록 합니다.
+    go(S.picked.length === CONFIG.ACTIONS_TO_PICK ? "log" : "select"); return;
+  }
+  if(t.dataset.policyRound){
+    S.policyRound = Number(t.dataset.policyRound); S.policyWarn = false;
+    save(); go("policy"); return;
+  }
+  if(t.dataset.saveImage){ saveScreenImage(); return; }
+  if(t.hasAttribute("data-csv")){ downloadCsv(); return; }
+
+  if(t.dataset.q !== undefined){
+    S.answers[t.dataset.q] = Number(t.dataset.i); save(); render(); return;
+  }
+  if(t.dataset.pre !== undefined){
+    S.profile = S.profile || {};
+    S.profile[t.dataset.pre] = Number(t.dataset.i); save(); render(); return;
+  }
+  if(t.dataset.multi !== undefined){
+    const id = t.dataset.multi, k = t.dataset.k;
+    const cur = Array.isArray(S.answers[id]) ? S.answers[id].slice() : [];
+    const i = cur.indexOf(k);
+    if(i>=0) cur.splice(i,1); else cur.push(k);
+    S.answers[id] = cur; save(); render(); return;
+  }
+  if(t.dataset.num !== undefined){
+    const id = t.dataset.num, q = findQuestion(id);
+    const cur = num(S.answers[id], q && q.def !== undefined ? q.def : 0);
+    const next = Math.max(q&&q.min!==undefined?q.min:0,
+                 Math.min(q&&q.max||999, Math.round((cur + Number(t.dataset.delta))*10)/10));
+    S.answers[id] = next; save(); render(); return;
+  }
+  if(t.dataset.count !== undefined){
+    const id = t.dataset.count, k = t.dataset.k;
+    const cur = Object.assign({}, S.answers[id] || {});
+    cur[k] = Math.max(0, Math.min(20, num(cur[k]) + Number(t.dataset.delta)));
+    S.answers[id] = cur; save(); render(); return;
+  }
+  if(t.hasAttribute("data-calcnext")){
+    if(S.wizardStep < SECTOR_KEYS.length-1){ S.wizardStep++; save(); render(); window.scrollTo({top:0}); }
+    else { go("result"); }
+    return;
+  }
+  if(t.hasAttribute("data-calcprev")){
+    if(S.wizardStep > 0){ S.wizardStep--; save(); render(); window.scrollTo({top:0}); }
+    else go("calcIntro");
+    return;
+  }
+  if(t.hasAttribute("data-calcback")){ S.wizardStep = SECTOR_KEYS.length-1; go("calc"); return; }
+  if(t.hasAttribute("data-recalc")){
+    // 다시 계산하면 이전 회차에 골라둔 실천과 기록을 비웁니다.
+    S.wizardStep = 0; S.picked = []; S.logs = {}; S.day = 0;
+    S.policies = []; S.social = []; S.pickWarn = false;
+    go("calc"); return;
+  }
+
+  if(t.hasAttribute("data-clearpicks")){ S.picked = []; S.pickWarn = false; save(); render(); return; }
+  if(t.dataset.pick){
+    const id = t.dataset.pick, i = S.picked.indexOf(id);
+    if(i >= 0){ S.picked.splice(i,1); S.pickWarn = false; }
+    else if(S.picked.length < CONFIG.ACTIONS_TO_PICK){ S.picked.push(id); S.pickWarn = false; }
+    else { S.pickWarn = true; }   // 자동 해제하지 않고 안내만 합니다
+    save(); render();
+    if(S.pickWarn) window.scrollTo({top:document.body.scrollHeight, behavior:"smooth"});
+    return;
+  }
+
+  if(t.dataset.social !== undefined){
+    const v = t.dataset.social;
+    S.social = S.social || [];
+    const i = S.social.indexOf(v);
+    if(i>=0) S.social.splice(i,1); else S.social.push(v);
+    save(); render(); return;
+  }
+  if(t.dataset.policy !== undefined){
+    const key = policyKey(), v = t.dataset.policy;
+    S[key] = S[key] || [];
+    const i = S[key].indexOf(v);
+    if(i>=0){ S[key].splice(i,1); S.policyWarn = false; }
+    else if(S[key].length < 3){ S[key].push(v); S.policyWarn = false; }
+    else S.policyWarn = true;
+    save(); render(); return;
+  }
+  if(t.hasAttribute("data-policy-done")){
+    if(S.policyRound === 2){ go("final"); return; }
+    S.day = Math.min(CONFIG.PROGRAM_DAYS-1, CONFIG.MIDPOINT_DAY);
+    save(); go("log"); return;
+  }
+  if(t.dataset.day !== undefined){ S.day = Number(t.dataset.day); save(); render(); return; }
+  if(t.dataset.daynav){
+    const step = Number(t.dataset.daynav);
+    if(step < 0 && S.day === 0){ go("select"); return; }
+    S.day = Math.max(0, Math.min(CONFIG.PROGRAM_DAYS-1, S.day + step));
+    save(); render(); window.scrollTo({top:0}); return;
+  }
+  if(t.dataset.log !== undefined){
+    const l = S.logs[S.day] = S.logs[S.day] || {};
+    l[t.dataset.log] = Number(t.dataset.v);
+    save(); render(); return;
+  }
+  if(t.dataset.barrier){
+    const l = S.logs[S.day] = S.logs[S.day] || {};
+    l.barriers = l.barriers || [];
+    const id = t.dataset.barrier, i = l.barriers.indexOf(id);
+    if(i>=0) l.barriers.splice(i,1);
+    else {
+      if(id==="none") l.barriers = ["none"];
+      else { l.barriers = l.barriers.filter(x=>x!=="none"); l.barriers.push(id); }
+    }
+    save(); render(); return;
+  }
+  if(t.hasAttribute("data-savelog")){
+    if(missingFields(S.day).length){ render(); return; }
+    const l = S.logs[S.day] = S.logs[S.day] || {};
+    l._done = true; save();
+    if(S.day === CONFIG.MIDPOINT_DAY-1){ go("midpoint"); return; }   // 7일차 중간 결과
+    if(S.day < CONFIG.PROGRAM_DAYS-1){ S.day++; save(); render(); window.scrollTo({top:0}); }
+    else { go("final"); }
+    return;
+  }
+
+  if(t.dataset.demo === "profile"){
+    S.profile = Object.assign({}, S.profile, { name:"홍길동", contact:"010-1234-5678" });
+    save(); render(); return;
+  }
+  if(t.dataset.demo === "fill"){
+    S.answers = Object.assign({}, DEMO_ANSWERS); save(); render(); return;
+  }
+  if(t.dataset.demo === "days"){ fillDemoDays(); save(); go("final"); return; }
+
+  if(t.dataset.target){
+    CONFIG.TARGET_2030 = Number(t.dataset.target);
+    TARGET_BASIS.rows[3][1] = fmt(CONFIG.TARGET_2030) + "톤 (본 프로젝트 설정값)";
+    openModal(modalSettings()); render(); return;
+  }
+  if(t.dataset.theme){
+    document.documentElement.setAttribute("data-theme", t.dataset.theme);
+    openModal(modalSettings()); return;
+  }
+  if(t.hasAttribute("data-restart")){
+    S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} };
+    save(); closeModal(); render(); window.scrollTo({top:0}); return;
+  }
+});
+
+/* 숫자를 타이핑하는 중에는 화면을 다시 그리지 않고 버튼 상태만 바꿉니다. */
+function refreshCalcNav(){
+  if(S.screen !== "calc") return;
+  const qs = QUESTIONS[SECTOR_KEYS[S.wizardStep]];
+  const btn = document.querySelector("[data-calcnext]");
+  if(btn) btn.disabled = qs.some(q => !qAnswered(q));
+}
+
+/* 입력 중에는 화면을 다시 그리지 않고 버튼·안내만 갱신합니다. */
+function syncProfileNav(){
+  const ok = profileReady();
+  const btn = document.querySelector('[data-go="calcIntro"].btn');
+  if(btn) btn.disabled = !ok;
+  const hint = document.getElementById("profileHint");
+  if(hint) hint.style.display = ok ? "none" : "";
+}
+
+function findQuestion(id){
+  for(const k of SECTOR_KEYS){ const q = QUESTIONS[k].find(x=>x.id===id); if(q) return q; }
+  return null;
+}
+
+document.addEventListener("input", e=>{
+  const t = e.target;
+  if(t.hasAttribute && t.hasAttribute("data-numinput")){
+    const id = t.dataset.numinput;
+    S.answers[id] = t.value === "" ? "" : Number(t.value);
+    save(); refreshCalcNav(); return;
+  }
+  if(t.hasAttribute && t.hasAttribute("data-countinput")){
+    const id = t.dataset.countinput, k = t.dataset.k;
+    const cur = Object.assign({}, S.answers[id] || {});
+    cur[k] = num(t.value);
+    S.answers[id] = cur; save(); refreshCalcNav(); return;
+  }
+  if(t.hasAttribute && t.hasAttribute("data-doing")){
+    const l = S.logs[S.day] = S.logs[S.day] || {};
+    l[t.dataset.doing + "Note"] = t.value; save(); return;
+  }
+  if(t.hasAttribute && t.hasAttribute("data-note")){
+    const l = S.logs[S.day] = S.logs[S.day] || {};
+    l.note = t.value; save();
+  }
+  if(t.hasAttribute && t.hasAttribute("data-phone")){
+    const pos = t.selectionStart, before = t.value;
+    const f = formatPhone(t.value);
+    t.value = f;
+    if(f.length > before.length) t.setSelectionRange(f.length, f.length);
+    else if(pos !== null) t.setSelectionRange(pos, pos);
+    S.profile = S.profile || {};
+    S.profile.contact = f; save();
+    const bad = f.length > 0 && !phoneValid(f);
+    t.classList.toggle("bad", bad);
+    const msg = document.getElementById("phoneMsg");
+    if(msg){
+      msg.classList.toggle("bad", bad);
+      msg.textContent = bad ? "휴대전화번호 11자리를 확인해주세요."
+                            : "숫자만 입력하면 자동으로 하이픈이 붙습니다.";
+    }
+    syncProfileNav();
+    return;
+  }
+  if(t.hasAttribute && t.hasAttribute("data-profile")){
+    S.profile = S.profile || {};
+    S.profile[t.dataset.profile] = t.value; save();
+    // 입력 중 화면을 다시 그리면 포커스가 사라지므로 버튼 상태만 갱신합니다.
+    syncProfileNav();
+  }
+});
+
+document.addEventListener("change", e=>{
+  const t = e.target;
+  if(t.hasAttribute && t.hasAttribute("data-pre-select")){
+    S.profile = S.profile || {};
+    const v = t.value;
+    if(v === "") delete S.profile[t.dataset.preSelect];
+    else S.profile[t.dataset.preSelect] = Number(v);
+    save();
+  }
+});
+
+$("#btnTools").addEventListener("click", ()=>{
+  const inner = $("#toolsInner"), open = inner.hidden;
+  inner.hidden = !open;
+  $("#btnTools").setAttribute("aria-expanded", String(open));
+  $("#btnTools").textContent = open ? "⋯ 닫기" : "⋯ 시연 도구";
+});
+$("#btnSettings").addEventListener("click", ()=>openModal(modalSettings()));
+$("#btnReset").addEventListener("click", ()=>{
+  S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} };
+  save(); render(); window.scrollTo({top:0});
+});
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+
+load();
+render();
+</script>
+</body>
+</html>
