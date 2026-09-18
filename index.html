@@ -413,13 +413,6 @@ table.src td:first-child{color:var(--ink-3);width:38%;padding-right:12px}
 
   <div class="footer">
     <span id="footNote">1.5℃ 라이프스타일 2주 살기</span>
-    <span id="footTools">
-      <button id="btnTools" aria-expanded="false">⋯ 시연 도구</button>
-      <span id="toolsInner" hidden>
-        &nbsp;·&nbsp;<button id="btnSettings">설정</button>
-        &nbsp;·&nbsp;<button id="btnReset">처음부터</button>
-      </span>
-    </span>
   </div>
 </div>
 
@@ -1332,10 +1325,7 @@ function scProfile(){
     <button class="btn" data-go="calcIntro" ${ok?"":"disabled"}>다음</button>
   </div>
   <p class="muted" id="profileHint" style="margin-top:12px;${ok?"display:none":""}">이름과 휴대전화번호를 입력하면 다음으로 넘어갑니다.</p>
-  <p class="muted" style="margin-top:22px;padding-top:14px;border-top:1px solid var(--rule-2)">
-    <button class="linkish" data-demo="profile">시연용 — 예시 이름·번호 채우기</button><br>
-    <button class="linkish" data-go="calcIntro">시연용 — 입력 없이 계속하기</button><br>
-    <span style="font-size:12px">실제 운영 시에는 이 줄을 삭제하세요. (scProfile 함수 맨 아래)</span></p>`;
+`;
 }
 
 /* ============================================================
@@ -1526,7 +1516,7 @@ function scCalc(){
   </div>
   ${missing.length?`<div class="warn" style="margin-top:12px">아직 ${missing.length}개 문항이 비어 있습니다.
     해당 없으면 0을 적거나 ‘아니오’를 선택해주세요.</div>`:``}
-  <div style="margin-top:22px"><button class="linkish" data-demo="fill">시연용 예시 응답 채우기</button></div>`;
+`;
 }
 
 /* ---------- ⑤ 결과: 나와 1.5℃ 한계선 ---------- */
@@ -1891,7 +1881,6 @@ function scLog(){
 
   <hr class="hr">
   <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center">
-    <button class="linkish" data-demo="days">시연용 14일 기록 자동 채우기</button>
     <button class="linkish" data-go="final" ${doneCount?"":"disabled style=\"opacity:.4\""}>
       ${doneCount>=CONFIG.PROGRAM_DAYS ? "14일 결과 보기" : "지금까지의 결과 보기"}</button>
   </div>`;
@@ -2574,17 +2563,6 @@ document.addEventListener("change", e=>{
   }
 });
 
-$("#btnTools").addEventListener("click", ()=>{
-  const inner = $("#toolsInner"), open = inner.hidden;
-  inner.hidden = !open;
-  $("#btnTools").setAttribute("aria-expanded", String(open));
-  $("#btnTools").textContent = open ? "⋯ 닫기" : "⋯ 시연 도구";
-});
-$("#btnSettings").addEventListener("click", ()=>openModal(modalSettings()));
-$("#btnReset").addEventListener("click", ()=>{
-  S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} };
-  save(); render(); window.scrollTo({top:0});
-});
 document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
 
 load();
