@@ -579,14 +579,14 @@ const REGIONS_SIDO = ["서울특별시","부산광역시","대구광역시","인
   "전북특별자치도","전라남도","경상북도","경상남도","제주특별자치도"];
 const GROUPS = {
   /* 원주시 행정구역 — 1읍 8면 16행정동 (원주시청 읍면동 안내 기준) */
-  wonju: { name:"원주 지속가능발전협의회", regionPh:"읍·면·동을 선택하세요",
+  wonju: { name:"원주", regionPh:"읍·면·동을 선택하세요",
     regions:["문막읍",
        "소초면","호저면","지정면","부론면","귀래면","흥업면","판부면","신림면",
        "중앙동","원인동","개운동","명륜1동","명륜2동","일산동","학성동","단계동","우산동",
        "태장1동","태장2동","봉산동","행구동","무실동","단구동","반곡관설동",
        "원주시 밖에 삽니다"] },
   /* 홍성군 행정구역 — 3읍 8면 */
-  pulmu: { name:"풀무학교", regionPh:"읍·면을 선택하세요",
+  pulmu: { name:"풀무", regionPh:"읍·면을 선택하세요",
     regions:["홍성읍","광천읍","홍북읍",
        "금마면","홍동면","장곡면","은하면","결성면","서부면","갈산면","구항면",
        "홍성군 밖에 삽니다"] },
@@ -1315,7 +1315,7 @@ function scIntro(){
     twoweek:"2주 살기 안내", select:"실천 선택", log:"14일 기록", final:"최종 결과" }[back] || "계산 결과";
   return `
   <div style="padding-top:56px">
-    <p class="kicker">${groupInfo() && S.group !== "solo" ? esc(groupInfo().name) + "와 함께하는 " : ""}기후생활 시민 실험 프로그램</p>
+    <p class="kicker">${groupInfo() && S.group !== "solo" ? esc(groupInfo().name) + " · " : ""}기후생활 시민 실험 프로그램</p>
     ${S.authMsg ? `<p class="note" style="margin:0 0 18px">${esc(S.authMsg)}</p>` : ``}
     <h1 style="font-size:30px;line-height:1.3;letter-spacing:-.03em">1.5℃ 라이프스타일 2주 살기</h1>
     <p class="lede">내 생활에서 나오는 탄소배출을 먼저 계산합니다.
