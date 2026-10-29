@@ -451,32 +451,18 @@ const CONFIG = {
 };
 
 /* ============================================================
-   구글 시트 연동 방법 (참가자 결과 자동 수집)
-   1) 수집용 구글 시트를 열고 확장 프로그램 → Apps Script 에 아래 코드를 붙여넣습니다.
+   구글 시트 연동 방법 (참가자 결과 수집 + 기록 불러오기)
+   서버 코드는 저장소의 apps-script/Code.gs 에 있습니다.
+   1) 수집용 구글 시트 → 확장 프로그램 → Apps Script 에 Code.gs 내용을 붙여넣습니다.
+      Code.gs 의 SECRET 을 아래 CONFIG.SUBMIT_KEY 와 같은 값으로 맞춥니다.
+   2) 배포 → 배포 관리 → (기존 배포) 수정 → 버전: 새 버전 → 배포
+      실행 사용자: 나, 액세스 권한: 모든 사용자
+      기존 배포를 수정하면 웹 앱 URL이 바뀌지 않습니다.
+   3) 새로 배포했다면 나온 웹 앱 URL을 CONFIG.SUBMIT_URL 에 붙여넣습니다.
 
-      var SECRET = "wonju2026";   // CONFIG.SUBMIT_KEY 와 같은 값으로 맞추세요
-      function doPost(e){
-        var d = JSON.parse(e.postData.contents);
-        if(d.key !== SECRET) return ContentService.createTextOutput("denied");
-        var sh = SpreadsheetApp.getActiveSpreadsheet().getSheets()[0];
-        sh.appendRow([new Date(), d.stage, d.name, d.contact, d.region, d.age, d.gender, d.spend,
-          d.food, d.consumption, d.transport, d.housing, d.leisure,
-          d.total, d.target, d.gap, d.rate,
-          d.action1, d.action2, d.action3,
-          d.days, d.reducedKg, d.annualT, d.afterT, d.remainT,
-          d.policy1a, d.policy1b, d.policy1c, d.policy2a, d.policy2b, d.policy2c,
-          d.barrier1, d.barrier2, d.barrier3, d.social, d.notes]);
-        return ContentService.createTextOutput("ok");
-      }
-
-   2) 배포 → 새 배포 → 유형: 웹 앱 →
-      실행 사용자: 나, 액세스 권한: 모든 사용자 → 배포
-   3) 나온 웹 앱 URL을 위 CONFIG.SUBMIT_URL 에 붙여넣습니다.
-
-   참가자 한 명이 두 줄을 남깁니다. 계산을 마쳤을 때 '계산완료',
-   14일을 마쳤을 때 '2주완료' 입니다.
+   첫 번째 탭: 참가자 한 명이 두 줄을 남깁니다('계산완료', '2주완료'). 마지막 열이 운영단위입니다.
+   '참가자' 탭: 로그인 정보와 진행 중인 기록 전체(JSON)를 한 사람당 한 줄로 보관합니다.
    ※ claude.ai 미리보기에서는 외부 전송이 차단되어 동작하지 않습니다.
-     연구소 홈페이지나 GitHub Pages에 올린 뒤부터 작동합니다.
    ============================================================ */
 
 /* 목표값의 근거 설명 — 산식/출처가 바뀌면 이 객체만 수정합니다.
@@ -582,14 +568,46 @@ const CARBON_FACTORS = {
 /* ============================================================
    사전 문항 (배출량 계산에는 쓰이지 않는 참가자 특성)
    ============================================================ */
-const PRE_QUESTIONS = [
+/* ============================================================
+   운영 단위 — 프로그램을 함께 진행하는 지역 단체·학교
+   전용 링크로 들어오면 자동으로 지정됩니다. 예) https://15c.igt.or.kr/?g=wonju
+   링크에 g 가 없으면 참가자 정보 화면에서 직접 고릅니다.
+   새 단위를 추가하려면 아래에 한 줄을 넣고, regions 에 그 지역의 읍·면·동 목록을 넣습니다.
+   ============================================================ */
+const REGIONS_SIDO = ["서울특별시","부산광역시","대구광역시","인천광역시","광주광역시","대전광역시",
+  "울산광역시","세종특별자치시","경기도","강원특별자치도","충청북도","충청남도",
+  "전북특별자치도","전라남도","경상북도","경상남도","제주특별자치도"];
+const GROUPS = {
   /* 원주시 행정구역 — 1읍 8면 16행정동 (원주시청 읍면동 안내 기준) */
-  { id:"region", type:"select", t:"어느 지역에 사시나요?", ph:"읍·면·동을 선택하세요",
-    o:["문막읍",
+  wonju: { name:"원주 지속가능발전협의회", regionPh:"읍·면·동을 선택하세요",
+    regions:["문막읍",
        "소초면","호저면","지정면","부론면","귀래면","흥업면","판부면","신림면",
        "중앙동","원인동","개운동","명륜1동","명륜2동","일산동","학성동","단계동","우산동",
        "태장1동","태장2동","봉산동","행구동","무실동","단구동","반곡관설동",
        "원주시 밖에 삽니다"] },
+  /* 홍성군 행정구역 — 3읍 8면 */
+  pulmu: { name:"풀무학교", regionPh:"읍·면을 선택하세요",
+    regions:["홍성읍","광천읍","홍북읍",
+       "금마면","홍동면","장곡면","은하면","결성면","서부면","갈산면","구항면",
+       "홍성군 밖에 삽니다"] },
+  /* 운영 단위 없이 개별로 참가하는 경우 */
+  solo:  { name:"개별 참가", regionPh:"시·도를 선택하세요", regions:REGIONS_SIDO }
+};
+const LINK_GROUP = (()=>{
+  try{ const g = new URLSearchParams(location.search).get("g"); return GROUPS[g] ? g : null; }
+  catch(e){ return null; }
+})();
+const groupInfo = () => GROUPS[S.group] || null;
+
+/* 지역 문항은 운영 단위에 따라 목록이 바뀝니다. */
+function preQuestions(){
+  const G = groupInfo() || GROUPS.solo;
+  return [
+    { id:"region", type:"select", t:"어느 지역에 사시나요?", ph:G.regionPh, o:G.regions },
+    ...PRE_QUESTIONS
+  ];
+}
+const PRE_QUESTIONS = [
   { id:"age", t:"연령대는 어떻게 되시나요?", o:["10대","20대","30대","40대","50대","60대","70대 이상"] },
   { id:"gender", t:"성별", o:["여성","남성","기타"] },
   { id:"spend", t:"가구당 월 평균 소비지출액", o:["150만 원 이하","151~250만 원","251~350만 원",
@@ -813,12 +831,13 @@ let S = {
   logs: {},           // {dayIndex: {...}}
 };
 
-function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} }
+function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){} scheduleSync(); }
 function load(){
   // ?fresh=1 로 열면 저장된 기록을 지우고 완전히 처음부터 시작합니다.
   try{
     if(new URLSearchParams(location.search).has("fresh")){
       localStorage.removeItem(STORE_KEY);
+      if(LINK_GROUP) S.group = LINK_GROUP;
       return;
     }
   }catch(e){}
@@ -826,6 +845,13 @@ function load(){
     const r = localStorage.getItem(STORE_KEY);
     if(r){ const p = JSON.parse(r); if(p && typeof p === "object") S = Object.assign(S, p); }
   }catch(e){}
+  // 이전 버전에서 시작한 참가자는 모두 원주 프로그램 참가자입니다.
+  if(!S.group && S.profile && S.profile.name) S.group = "wonju";
+  // 전용 링크로 들어오면 운영 단위를 링크에 맞춥니다. 운영 단위가 바뀌면 지역 응답은 다시 받습니다.
+  if(LINK_GROUP && S.group !== LINK_GROUP){
+    if(S.group && S.profile) delete S.profile.region;
+    S.group = LINK_GROUP;
+  }
   // 링크를 연 사람은 언제나 첫 화면에서 시작합니다.
   // 이전에 진행하던 자리는 첫 화면의 '이어서 하기'로만 돌아갑니다.
   S.resumeTo = (S.screen && S.screen !== "intro") ? S.screen : null;
@@ -833,6 +859,134 @@ function load(){
   // 계산기는 항상 첫 분야(먹거리)부터 다시 보여줍니다.
   // 이전에 답한 내용은 선택된 상태로 남아 있고, 화면이 건너뛰어지지 않습니다.
   S.wizardStep = 0;
+}
+
+/* ============================================================
+   기록 불러오기 (간단한 로그인)
+   이름 + 휴대전화번호 뒷 4자리 + 참가자가 정한 숫자 4자리(PIN)로
+   다른 기기에서도 같은 기록을 이어갈 수 있게 합니다.
+   서버(Apps Script)는 PIN 원문을 저장하지 않고, 해시값만 보관합니다.
+   로그인하면 서버가 발급한 토큰을 S.auth 에 두고, 기록이 바뀔 때마다 서버에 저장합니다.
+   ============================================================ */
+const last4 = phone => String(phone||"").replace(/\D/g,"").slice(-4);
+const pinValid = v => /^\d{4}$/.test(String(v||""));
+
+async function callServer(payload){
+  const res = await fetch(CONFIG.SUBMIT_URL, {
+    method:"POST",
+    headers:{ "Content-Type":"text/plain;charset=utf-8" },
+    body: JSON.stringify(Object.assign({ key: CONFIG.SUBMIT_KEY }, payload))
+  });
+  return res.json();
+}
+
+/* 서버에 올리는 기록 — 토큰·PIN 같은 인증 정보는 빼고 보냅니다. */
+function syncState(){
+  const c = Object.assign({}, S);
+  delete c.auth; delete c.authMsg; delete c.resumeTo;
+  return c;
+}
+
+let syncTimer = null;
+function scheduleSync(){
+  if(!CONFIG.SUBMIT_URL || !(S.auth && S.auth.token)) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(pushState, 2500);
+}
+function pushState(keepalive){
+  clearTimeout(syncTimer); syncTimer = null;
+  if(!CONFIG.SUBMIT_URL || !(S.auth && S.auth.token)) return;
+  const body = JSON.stringify({ key: CONFIG.SUBMIT_KEY, action:"sync",
+    token: S.auth.token, groupName: (groupInfo()||{}).name || "", state: syncState() });
+  fetch(CONFIG.SUBMIT_URL, { method:"POST", keepalive: !!keepalive,
+    headers:{ "Content-Type":"text/plain;charset=utf-8" }, body })
+    .catch(()=>{ /* 연결이 끊기면 다음 저장 때 다시 보냅니다 */ });
+}
+// 앱을 닫거나 다른 앱으로 넘어갈 때 남은 기록을 바로 보냅니다.
+document.addEventListener("visibilitychange", ()=>{
+  if(document.visibilityState === "hidden" && syncTimer) pushState(true);
+});
+
+/* 서버에서 받은 기록으로 이 기기의 기록을 바꿉니다. */
+function adoptState(state, token){
+  S = Object.assign({ screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} }, state || {});
+  S.auth = { token };
+  if(LINK_GROUP && !S.group) S.group = LINK_GROUP;
+  S.resumeTo = (S.screen && S.screen !== "intro") ? S.screen : null;
+  S.screen = "intro"; S.wizardStep = 0;
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(S)); }catch(e){}
+}
+
+/* 참가자 정보 화면에서 입력한 PIN — 기기에 저장하지 않습니다. */
+let pendingPin = "";
+
+/* 참가자 정보 화면의 '다음' — 서버에 등록하고 토큰을 받습니다. */
+async function registerAndContinue(btn){
+  const pf = S.profile || {};
+  if(!CONFIG.SUBMIT_URL){ go("calcIntro"); return; }
+  if(S.auth && S.auth.token && S.auth.name === pf.name && S.auth.last4 === last4(pf.contact)){
+    go("calcIntro"); return;                       // 이미 등록한 사람이 이전 화면으로 돌아왔다가 다시 넘어가는 경우
+  }
+  btn.disabled = true; btn.textContent = "확인하는 중…";
+  let r;
+  try{
+    r = await callServer({ action:"register", name:pf.name, phone:pf.contact, pin:pendingPin,
+      group: S.group, groupName: (groupInfo()||{}).name || "" });
+  }catch(e){
+    // 연결이 안 되면 기기에만 저장하며 진행합니다. 기록 불러오기는 쓸 수 없습니다.
+    go("calcIntro"); return;
+  }
+  if(r && r.ok){
+    if(r.state){
+      // 같은 이름·번호·PIN으로 이미 진행한 기록이 있으면 그 기록을 불러옵니다.
+      adoptState(r.state, r.token);
+      S.auth.name = pf.name; S.auth.last4 = last4(pf.contact);
+      pendingPin = "";
+      S.authMsg = "이미 진행하신 기록이 있어 불러왔습니다. 아래 '이어서 하기'를 눌러주세요.";
+      save(); render(); window.scrollTo({top:0}); return;
+    }
+    S.auth = { token:r.token, name:pf.name, last4:last4(pf.contact) };
+    pendingPin = "";
+    go("calcIntro"); pushState(); return;
+  }
+  btn.disabled = false; btn.textContent = "다음";
+  const msg = document.getElementById("profileHint");
+  if(msg){
+    msg.style.display = "";
+    msg.classList.add("bad");
+    msg.textContent = (r && r.error === "pin")
+      ? "같은 이름과 번호로 등록된 기록이 있습니다. 그때 정한 숫자 4자리를 입력하시거나, 첫 화면의 '기록 불러오기'를 이용해주세요."
+      : (r && r.error === "locked")
+      ? "비밀번호를 여러 번 틀려 잠시 잠겼습니다. 10분 뒤에 다시 시도해주세요."
+      : "등록하지 못했습니다. 잠시 뒤에 다시 눌러주세요.";
+  }
+}
+
+/* 로그인 입력값은 기기에 저장하지 않도록 S 밖에 둡니다. */
+let loginForm = {};
+async function doLogin(btn){
+  const f = loginForm;
+  const msg = document.getElementById("loginMsg");
+  const say = (t, bad) => { if(msg){ msg.textContent = t; msg.classList.toggle("bad", !!bad); } };
+  if(!(f.name||"").trim() || !/^\d{4}$/.test(f.last4||"") || !pinValid(f.pin)){
+    say("이름, 휴대전화번호 뒷 4자리, 숫자 4자리를 모두 입력해주세요.", true); return;
+  }
+  if(!CONFIG.SUBMIT_URL){ say("서버가 연결되지 않아 기록을 불러올 수 없습니다.", true); return; }
+  btn.disabled = true; btn.textContent = "불러오는 중…";
+  let r;
+  try{ r = await callServer({ action:"login", name:f.name, last4:f.last4, pin:f.pin }); }
+  catch(e){ r = null; }
+  btn.disabled = false; btn.textContent = "기록 불러오기";
+  if(r && r.ok){
+    adoptState(r.state, r.token);
+    S.auth.name = (S.profile||{}).name || f.name.trim();
+    S.auth.last4 = f.last4;
+    loginForm = {};
+    save(); go(S.resumeTo || "intro"); return;
+  }
+  say(!r ? "연결이 원활하지 않습니다. 잠시 뒤에 다시 시도해주세요."
+    : r.error === "locked" ? "여러 번 틀려 잠시 잠겼습니다. 10분 뒤에 다시 시도해주세요."
+    : "일치하는 기록이 없습니다. 이름과 번호, 숫자 4자리를 다시 확인해주세요.", true);
 }
 
 const $ = sel => document.querySelector(sel);
@@ -1127,10 +1281,10 @@ function breakdown(sectors, total){
    ============================================================ */
 const STAGES = ["왜 1.5℃ 라이프스타일인가","나의 탄소발자국 계산","2030년 목표와의 격차",
                 "나의 배출구조","감축 가능성이 큰 행동","2주 실천 3개 선택","14일 생활 기록","나의 변화와 사회적 장벽"];
-const STAGE_OF = { intro:0, why:0, profile:1, calcIntro:1, calc:1, result:2, social:3, policy:4,
+const STAGE_OF = { intro:0, login:0, why:0, profile:1, calcIntro:1, calc:1, result:2, social:3, policy:4,
                    actions:4, twoweek:4, select:5, log:6, midpoint:6, final:7 };
 
-function go(name){ S.screen = name; save(); render(); window.scrollTo({top:0,behavior:"instant"}); }
+function go(name){ S.screen = name; delete S.authMsg; save(); render(); window.scrollTo({top:0,behavior:"instant"}); }
 
 function syncFooterTools(){
   const tools = $("#footTools");
@@ -1139,7 +1293,7 @@ function syncFooterTools(){
 
 function renderRail(){
   const rail = $("#rail");
-  if(S.screen === "intro"){ rail.hidden = true; return; }
+  if(S.screen === "intro" || S.screen === "login"){ rail.hidden = true; return; }
   rail.hidden = false;
   let i = STAGE_OF[S.screen];
   if(S.screen === "result") i = 3;                 // 격차 + 배출구조를 한 화면에서 다룸
@@ -1155,12 +1309,14 @@ function scIntro(){
     "나의 배출구조 확인","감축 가능성이 큰 생활행동 확인","2주 동안 실험할 행동 3개 선택",
     "14일 생활 기록과 실험","나의 변화와 사회적 장벽 확인"];
   const resume = S.answers.beef !== undefined;
+  const loggedIn = !!(S.auth && S.auth.token);
   const back = S.resumeTo || "result";
   const backName = { calc:"계산기", result:"계산 결과", actions:"감축 가능 행동",
     twoweek:"2주 살기 안내", select:"실천 선택", log:"14일 기록", final:"최종 결과" }[back] || "계산 결과";
   return `
   <div style="padding-top:56px">
-    <p class="kicker">기후생활 시민 실험 프로그램</p>
+    <p class="kicker">${groupInfo() && S.group !== "solo" ? esc(groupInfo().name) + "와 함께하는 " : ""}기후생활 시민 실험 프로그램</p>
+    ${S.authMsg ? `<p class="note" style="margin:0 0 18px">${esc(S.authMsg)}</p>` : ``}
     <h1 style="font-size:30px;line-height:1.3;letter-spacing:-.03em">1.5℃ 라이프스타일 2주 살기</h1>
     <p class="lede">내 생활에서 나오는 탄소배출을 먼저 계산합니다.
     2030년까지 도달해야 할 1.5℃ 라이프스타일 목표와 지금의 나 사이에 얼마나 거리가 있는지 확인하고,
@@ -1179,10 +1335,46 @@ function scIntro(){
       <span class="bs-t">오늘의 생활 기록하기</span>
       <span class="bs-s">이미 시작하신 분은 바로 여기로</span>
     </button>
+    ${loggedIn ? `` : `<div style="margin-top:16px">
+      <button class="linkish" data-go="login">다른 기기에서 시작하셨나요? 기록 불러오기</button>
+    </div>`}
     <div style="margin-top:16px">
       <button class="linkish" data-modal="install">이 페이지를 홈 화면에 앱처럼 추가하기</button>
     </div>
-    ${resume ? `<div style="margin-top:12px"><button class="linkish" data-go="${back}">이어서 하기 — 이 브라우저에 저장된 ${backName} 화면으로 돌아가기</button></div>` : ``}
+    ${resume ? `<div style="margin-top:12px"><button class="linkish" data-go="${back}">이어서 하기 — 저장된 ${backName} 화면으로 돌아가기</button></div>` : ``}
+    ${loggedIn ? `<p class="muted" style="margin-top:28px;font-size:13px">${esc(S.auth.name||"")}님의 기록으로 저장하고 있습니다.
+      다른 사람이 이 기기를 쓴다면 <button class="linkish" style="font-size:13px" data-logout>이 기기에서 로그아웃</button>해주세요.</p>` : ``}
+  </div>`;
+}
+
+/* ---------- 기록 불러오기 ---------- */
+function scLogin(){
+  const f = loginForm;
+  return `
+  <h1>기록 불러오기</h1>
+  <p class="lede">처음 참가할 때 입력한 이름과 휴대전화번호 뒷 4자리,
+  직접 정한 숫자 4자리를 입력하면 다른 기기에서도 기록을 이어갈 수 있습니다.</p>
+  <div class="field">
+    <label for="lg-name">이름</label>
+    <input id="lg-name" data-login="name" type="text" autocomplete="name" value="${esc(f.name||"")}" placeholder="홍길동">
+  </div>
+  <div class="field">
+    <label for="lg-last4">휴대전화번호 뒷 4자리</label>
+    <input id="lg-last4" data-login="last4" type="text" inputmode="numeric" maxlength="4"
+      autocomplete="off" value="${esc(f.last4||"")}" placeholder="5678">
+  </div>
+  <div class="field">
+    <label for="lg-pin">내가 정한 숫자 4자리</label>
+    <input id="lg-pin" data-login="pin" type="password" inputmode="numeric" maxlength="4"
+      autocomplete="off" value="${esc(f.pin||"")}" placeholder="••••">
+  </div>
+  <p class="fieldmsg" id="loginMsg" style="margin-bottom:18px">숫자 4자리를 잊으셨다면 프로그램 담당자에게 문의해주세요.</p>
+  <div class="btn-row">
+    <button class="btn ghost" data-go="intro">이전</button>
+    <button class="btn" data-login-submit>기록 불러오기</button>
+  </div>
+  <div style="margin-top:18px">
+    <button class="linkish" data-go="why">처음 참가하시나요? 처음부터 시작하기</button>
   </div>`;
 }
 
@@ -1272,7 +1464,8 @@ function phoneValid(v){
 function profileReady(){
   const pf = S.profile || {};
   // 시연 단계 — 이름은 아무 글자나, 전화번호는 형식만 맞으면 통과합니다.
-  return (pf.name||"").trim().length >= 1 && phoneValid(pf.contact);
+  return (pf.name||"").trim().length >= 1 && phoneValid(pf.contact)
+    && !!groupInfo() && (pinValid(pendingPin) || !!(S.auth && S.auth.token));
 }
 
 function scProfile(){
@@ -1298,11 +1491,24 @@ function scProfile(){
     <p class="fieldmsg ${phoneBad?"bad":""}" id="phoneMsg">${
       phoneBad ? "휴대전화번호 11자리를 확인해주세요." : "숫자만 입력하면 자동으로 하이픈이 붙습니다."}</p>
   </div>
+  ${(S.auth && S.auth.token) ? `` : `<div class="field">
+    <label for="pf-pin">기록 불러오기용 숫자 4자리 <em>(필수)</em></label>
+    <input id="pf-pin" data-pin type="password" inputmode="numeric" maxlength="4"
+      autocomplete="new-password" value="${esc(pendingPin)}" placeholder="••••">
+    <p class="fieldmsg">다른 기기에서 기록을 이어갈 때 이름, 번호 뒷 4자리와 함께 입력합니다. 기억하기 쉬운 숫자로 정해주세요.</p>
+  </div>`}
+  ${LINK_GROUP ? `<p class="muted" style="margin:0">함께하는 곳: <b>${esc(GROUPS[LINK_GROUP].name)}</b></p>` : `<div class="field">
+    <label for="pf-group">어디에서 함께하시나요? <em>(필수)</em></label>
+    <select id="pf-group" class="selin" data-group-select>
+      <option value="">운영 단체·학교를 선택하세요</option>
+      ${Object.entries(GROUPS).map(([id,g])=>`<option value="${id}" ${S.group===id?"selected":""}>${esc(g.name)}</option>`).join("")}
+    </select>
+  </div>`}
 
   <hr class="hr">
   <p class="muted" style="margin-bottom:22px">아래 문항은 답하지 않고 넘어가셔도 됩니다.</p>
 
-  ${PRE_QUESTIONS.map(q=>{
+  ${preQuestions().map(q=>{
     if(q.type === "select"){
       return `<div class="q">
         <p class="q-title">${esc(q.t)}</p>
@@ -1324,9 +1530,9 @@ function scProfile(){
   <p class="muted">입력하신 내용은 프로그램 운영 목적으로만 사용하고, 종료 후 파기합니다.</p>
   <div class="btn-row">
     <button class="btn ghost" data-go="why">이전</button>
-    <button class="btn" data-go="calcIntro" ${ok?"":"disabled"}>다음</button>
+    <button class="btn" data-register ${ok?"":"disabled"}>다음</button>
   </div>
-  <p class="muted" id="profileHint" style="margin-top:12px;${ok?"display:none":""}">이름과 휴대전화번호를 입력하면 다음으로 넘어갑니다.</p>
+  <p class="muted" id="profileHint" style="margin-top:12px;${ok?"display:none":""}">필수 항목을 모두 입력하면 다음으로 넘어갑니다.</p>
 `;
 }
 
@@ -1337,7 +1543,7 @@ function scProfile(){
    ============================================================ */
 function buildSubmission(stage){
   const pf = S.profile || {}, r = calculate();
-  const pre = id => { const q = PRE_QUESTIONS.find(x=>x.id===id);
+  const pre = id => { const q = preQuestions().find(x=>x.id===id);
     return (q && pf[id] !== undefined) ? q.o[pf[id]] : ""; };
   const actName = i => { const a = ACTIONS.find(x=>x.id===S.picked[i]); return a ? a.name : ""; };
   const d = {
@@ -1355,7 +1561,8 @@ function buildSubmission(stage){
     policy1a:(S.policies||[])[0]||"", policy1b:(S.policies||[])[1]||"", policy1c:(S.policies||[])[2]||"",
     policy2a:(S.policies2||[])[0]||"", policy2b:(S.policies2||[])[1]||"", policy2c:(S.policies2||[])[2]||"",
     barrier1:"", barrier2:"", barrier3:"",
-    social:(S.social||[]).join(" / "), notes:""
+    social:(S.social||[]).join(" / "), notes:"",
+    group: (groupInfo()||{}).name || ""
   };
   if(stage === "2주완료"){
     const P = programSummary();
@@ -1393,12 +1600,12 @@ function downloadCsv(){
     "선택한실천1","선택한실천2","선택한실천3","기록일수","2주감축량(kg)","연간환산감축(톤)",
     "지속시배출량(톤)","남은격차(톤)","정책1차_1","정책1차_2","정책1차_3",
     "정책2차_1","정책2차_2","정책2차_3","주요장벽1","주요장벽2","주요장벽3",
-    "사회적기초_해당항목","자유기록"];
+    "사회적기초_해당항목","자유기록","운영단위"];
   const row = [new Date().toISOString(), d.stage, d.name, d.contact, d.region, d.age, d.gender, d.spend,
     d.food, d.consumption, d.transport, d.housing, d.leisure, d.total, d.target, d.gap, d.rate,
     d.action1, d.action2, d.action3, d.days, d.reducedKg, d.annualT, d.afterT, d.remainT,
     d.policy1a, d.policy1b, d.policy1c, d.policy2a, d.policy2b, d.policy2c,
-    d.barrier1, d.barrier2, d.barrier3, d.social, d.notes];
+    d.barrier1, d.barrier2, d.barrier3, d.social, d.notes, d.group];
   const esc2 = v => `"${String(v==null?"":v).replace(/"/g,'""')}"`;
   const csv = "\uFEFF" + head.map(esc2).join(",") + "\n" + row.map(esc2).join(",") + "\n";
   const blob = new Blob([csv], { type:"text/csv;charset=utf-8" });
@@ -2216,7 +2423,7 @@ function saveScreenImage(){
 /* ============================================================
    렌더 & 이벤트
    ============================================================ */
-const VIEWS = { intro:scIntro, why:scWhy, profile:scProfile, calcIntro:scCalcIntro, calc:scCalc,
+const VIEWS = { intro:scIntro, login:scLogin, why:scWhy, profile:scProfile, calcIntro:scCalcIntro, calc:scCalc,
                 result:scResult, actions:scActions, twoweek:scTwoweek, select:scSelect,
                 social:scSocial, policy:scPolicy,
                 log:scLog, midpoint:scMidpoint, final:scFinal };
@@ -2249,8 +2456,8 @@ function modalInstall(){
   <h3 style="margin-top:22px">안드로이드 (크롬)</h3>
   <p style="font-size:15px">오른쪽 위 <b>점 세 개 메뉴</b>를 누른 뒤
   <b>‘홈 화면에 추가’</b> 또는 <b>‘앱 설치’</b>를 선택하세요.</p>
-  <p class="note" style="margin-top:20px">기록은 이 기기의 브라우저에만 저장됩니다.
-  다른 기기에서 열면 기록이 보이지 않으니, 2주 동안 같은 기기로 들어와주세요.</p>`;
+  <p class="note" style="margin-top:20px">기록은 이 기기에 저장되고, 참가 등록을 마쳤다면 서버에도 함께 저장됩니다.
+  다른 기기에서는 첫 화면의 <b>‘기록 불러오기’</b>로 이어갈 수 있습니다.</p>`;
 }
 
 function modalSettings(){
@@ -2329,7 +2536,8 @@ document.addEventListener("click", e => {
     "[data-pick],[data-day],[data-log],[data-barrier],[data-savelog],[data-daynav],[data-demo],"+
     "[data-recalc],[data-calcback],[data-restart],[data-target],[data-theme],[data-close],"+
     "[data-skip-to-log],[data-policy-round],[data-save-image],[data-csv],[data-multi],[data-num],[data-count],"+
-    "[data-policy],[data-policy-done],[data-social],[data-pre],[data-clearpicks],[data-doing]");
+    "[data-policy],[data-policy-done],[data-social],[data-pre],[data-clearpicks],[data-doing],"+
+    "[data-register],[data-login-submit],[data-logout]");
   if(!t) return;
 
   if(t.hasAttribute("data-close")){ closeModal(); return; }
@@ -2339,7 +2547,19 @@ document.addEventListener("click", e => {
   if(t.dataset.modal === "basis"){ openModal(modalBasis()); return; }
   if(t.dataset.modal === "install"){ openModal(modalInstall()); return; }
 
+  if(t.hasAttribute("data-register")){ if(profileReady()) registerAndContinue(t); return; }
+  if(t.hasAttribute("data-login-submit")){ doLogin(t); return; }
+  if(t.hasAttribute("data-logout")){
+    // 이 기기의 기록만 지웁니다. 서버의 기록은 남아 있어 다시 불러올 수 있습니다.
+    if(syncTimer) pushState(true);
+    try{ localStorage.removeItem(STORE_KEY); }catch(e){}
+    S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} };
+    if(LINK_GROUP) S.group = LINK_GROUP;
+    render(); window.scrollTo({top:0}); return;
+  }
   if(t.hasAttribute("data-skip-to-log")){
+    // 이 기기에 기록이 없으면 먼저 다른 기기의 기록을 불러오도록 안내합니다.
+    if(!(S.auth && S.auth.token) && !(S.profile && S.profile.name) && CONFIG.SUBMIT_URL){ go("login"); return; }
     // 계산을 건너뛴 경우에도 실천 선택은 거치도록 합니다.
     go(S.picked.length === CONFIG.ACTIONS_TO_PICK ? "log" : "select"); return;
   }
@@ -2479,7 +2699,9 @@ document.addEventListener("click", e => {
     openModal(modalSettings()); return;
   }
   if(t.hasAttribute("data-restart")){
-    S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{} };
+    // 처음부터 다시 하더라도 참가자 정보와 로그인은 유지하고, 서버의 기록도 새 기록으로 바뀝니다.
+    S = { screen:"intro", answers:{}, wizardStep:0, picked:[], day:0, logs:{},
+          profile:S.profile, group:S.group, auth:S.auth };
     save(); closeModal(); render(); window.scrollTo({top:0}); return;
   }
 });
@@ -2495,7 +2717,7 @@ function refreshCalcNav(){
 /* 입력 중에는 화면을 다시 그리지 않고 버튼·안내만 갱신합니다. */
 function syncProfileNav(){
   const ok = profileReady();
-  const btn = document.querySelector('[data-go="calcIntro"].btn');
+  const btn = document.querySelector('[data-register].btn');
   if(btn) btn.disabled = !ok;
   const hint = document.getElementById("profileHint");
   if(hint) hint.style.display = ok ? "none" : "";
@@ -2546,6 +2768,14 @@ document.addEventListener("input", e=>{
     syncProfileNav();
     return;
   }
+  if(t.hasAttribute && t.hasAttribute("data-pin")){
+    t.value = t.value.replace(/\D/g,"").slice(0,4);
+    pendingPin = t.value; syncProfileNav(); return;
+  }
+  if(t.hasAttribute && t.hasAttribute("data-login")){
+    if(t.dataset.login !== "name") t.value = t.value.replace(/\D/g,"").slice(0,4);
+    loginForm[t.dataset.login] = t.value; return;
+  }
   if(t.hasAttribute && t.hasAttribute("data-profile")){
     S.profile = S.profile || {};
     S.profile[t.dataset.profile] = t.value; save();
@@ -2556,6 +2786,12 @@ document.addEventListener("input", e=>{
 
 document.addEventListener("change", e=>{
   const t = e.target;
+  if(t.hasAttribute && t.hasAttribute("data-group-select")){
+    // 운영 단위가 바뀌면 지역 목록이 달라지므로 지역 응답을 지우고 다시 그립니다.
+    S.group = t.value || undefined;
+    if(S.profile) delete S.profile.region;
+    save(); render(); return;
+  }
   if(t.hasAttribute && t.hasAttribute("data-pre-select")){
     S.profile = S.profile || {};
     const v = t.value;
@@ -2565,7 +2801,12 @@ document.addEventListener("change", e=>{
   }
 });
 
-document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape") closeModal();
+  if(e.key==="Enter" && e.target.hasAttribute && e.target.hasAttribute("data-login")){
+    const b = document.querySelector("[data-login-submit]"); if(b) doLogin(b);
+  }
+});
 
 load();
 render();
