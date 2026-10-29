@@ -2484,6 +2484,34 @@ function closeModal(){
   document.body.style.overflow = "";
 }
 
+/* 하루 기록을 마쳤을 때 보여주는 창 */
+function modalDayDone(dayIdx){
+  const kg = dayReduction(S.logs[dayIdx], baseline());
+  const doneDays = Object.keys(S.logs).filter(d => S.logs[d] && S.logs[d]._done).length;
+  const left = CONFIG.PROGRAM_DAYS - doneDays;
+  const toMid = CONFIG.MIDPOINT_DAY - (dayIdx + 1);
+  return `
+  <p class="kicker">${dayIdx + 1}일차 기록 완료</p>
+  <h2>오늘도 수고하셨습니다.</h2>
+  ${kg > 0.05
+    ? `<p style="font-size:15px">오늘 평소보다 <b>${fmt(kg,1)}킬로그램</b>을 덜 배출했습니다.</p>`
+    : `<p style="font-size:15px">오늘은 줄인 양이 크지 않았지만, 기록을 남긴 것만으로도 충분히 의미가 있습니다.
+      잘 안 됐던 이유가 마지막에 가장 중요한 기록이 됩니다.</p>`}
+  <div class="stat" style="margin-top:18px">
+    <div class="stat-label">${CONFIG.PROGRAM_DAYS}일 중 기록한 날</div>
+    <div class="stat-val"><b>${doneDays}</b><span>일${left > 0 ? ` · 남은 날 ${left}일` : ``}</span></div>
+  </div>
+  <p class="note" style="margin-top:18px">내일도 하루를 마무리할 때 들어와서 <b>${dayIdx + 2}일차</b>를 기록해주세요.
+  ${toMid > 0 && toMid <= 3 ? `${toMid}일만 더 기록하면 중간 결과를 볼 수 있습니다.` : ``}</p>
+  <div class="btn-row">
+    <button class="btn" data-day-end>오늘은 여기까지</button>
+  </div>
+  <div style="margin-top:14px;display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+    <button class="linkish" data-close>밀린 기록이 있어요 — ${dayIdx + 2}일차 이어서 기록하기</button>
+    <button class="linkish" data-modal="install">홈 화면에 추가해서 내일 바로 들어오기</button>
+  </div>`;
+}
+
 function modalInstall(){
   return `
   <h2>홈 화면에 추가하기</h2>
@@ -2575,7 +2603,7 @@ document.addEventListener("click", e => {
     "[data-recalc],[data-calcback],[data-restart],[data-target],[data-theme],[data-close],"+
     "[data-skip-to-log],[data-policy-round],[data-save-image],[data-csv],[data-multi],[data-num],[data-count],"+
     "[data-policy],[data-policy-done],[data-social],[data-pre],[data-clearpicks],[data-doing],"+
-    "[data-register],[data-login-submit],[data-logout]");
+    "[data-register],[data-login-submit],[data-logout],[data-day-end]");
   if(!t) return;
 
   if(t.hasAttribute("data-close")){ closeModal(); return; }
@@ -2713,10 +2741,16 @@ document.addEventListener("click", e => {
     const l = S.logs[S.day] = S.logs[S.day] || {};
     l._done = true; save();
     if(S.day === CONFIG.MIDPOINT_DAY-1){ go("midpoint"); return; }   // 7일차 중간 결과
-    if(S.day < CONFIG.PROGRAM_DAYS-1){ S.day++; save(); render(); window.scrollTo({top:0}); }
+    if(S.day < CONFIG.PROGRAM_DAYS-1){
+      // 바로 다음 날로 넘기지 않고, 오늘 기록을 마쳤다는 창을 먼저 보여줍니다.
+      const done = S.day;
+      S.day++; save(); render(); window.scrollTo({top:0});
+      openModal(modalDayDone(done));
+    }
     else { go("final"); }
     return;
   }
+  if(t.hasAttribute("data-day-end")){ closeModal(); go("intro"); return; }
 
   if(t.dataset.demo === "profile"){
     S.profile = Object.assign({}, S.profile, { name:"홍길동", contact:"010-1234-5678" });
