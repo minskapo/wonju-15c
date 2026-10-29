@@ -395,6 +395,8 @@ table.src td:first-child{color:var(--ink-3);width:38%;padding-right:12px}
   display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:var(--ink-3);flex-wrap:wrap}
 .footer button{background:none;border:0;color:var(--ink-3);font-size:12.5px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .footer a{color:var(--ink-3);text-decoration:none}
+.footer .foot-home{padding:0;font:inherit;color:inherit;text-decoration:none}
+.footer .foot-home:hover{color:var(--ink)}
 
 @media (max-width:420px){
   h1{font-size:26px}
@@ -420,7 +422,7 @@ table.src td:first-child{color:var(--ink-3);width:38%;padding-right:12px}
   <main id="screens"></main>
 
   <div class="footer">
-    <span id="footNote">1.5℃ 라이프스타일 2주 살기</span>
+    <button id="footNote" class="foot-home" data-go="intro" type="button">1.5℃ 라이프스타일 2주 살기</button>
     <a href="https://igt.or.kr" target="_blank" rel="noopener">녹색전환연구소</a>
   </div>
 </div>
