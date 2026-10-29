@@ -90,6 +90,10 @@ button{font-family:inherit;color:inherit}
 }
 .rail-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .rail-stage{font-size:13px;font-weight:500;letter-spacing:-.01em}
+.rail-left{display:flex;align-items:baseline;gap:6px;min-width:0}
+.rail-back{background:none;border:0;padding:4px 8px 4px 0;margin:-4px 0;font-size:17px;line-height:1;
+  color:var(--ink-2);cursor:pointer}
+.rail-back:hover{color:var(--ink)}
 .rail-count{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;flex:none}
 .rail-ticks{display:flex;gap:3px;margin-top:9px}
 .rail-ticks i{flex:1;height:3px;background:var(--rule);border-radius:2px}
@@ -404,7 +408,10 @@ table.src td:first-child{color:var(--ink-3);width:38%;padding-right:12px}
 <div class="shell">
   <div class="rail" id="rail" hidden>
     <div class="rail-top">
-      <div class="rail-stage" id="railStage">왜 1.5℃ 라이프스타일인가</div>
+      <div class="rail-left">
+        <button class="rail-back" id="railBack" type="button" aria-label="이전 화면으로">←</button>
+        <div class="rail-stage" id="railStage">왜 1.5℃ 라이프스타일인가</div>
+      </div>
       <div class="rail-count" id="railCount">1 / 8</div>
     </div>
     <div class="rail-ticks" id="railTicks"></div>
@@ -1284,7 +1291,38 @@ const STAGES = ["왜 1.5℃ 라이프스타일인가","나의 탄소발자국 �
 const STAGE_OF = { intro:0, login:0, why:0, profile:1, calcIntro:1, calc:1, result:2, social:3, policy:4,
                    actions:4, twoweek:4, select:5, log:6, midpoint:6, final:7 };
 
-function go(name){ S.screen = name; delete S.authMsg; save(); render(); window.scrollTo({top:0,behavior:"instant"}); }
+function go(name){
+  if(name !== S.screen) navPush(name);
+  S.screen = name; delete S.authMsg; save(); render(); window.scrollTo({top:0,behavior:"instant"});
+}
+
+/* ============================================================
+   뒤로 가기 — 화면을 옮길 때마다 브라우저 기록에 남겨서,
+   휴대폰의 뒤로 가기(안드로이드 버튼, 아이폰 스와이프)와 상단 ← 버튼이
+   사이트를 벗어나지 않고 이전 화면으로 돌아가게 합니다.
+   ============================================================ */
+let navDepth = 0;
+function navPush(screen, step){
+  try{ history.pushState({ screen, step: step ?? S.wizardStep, depth: ++navDepth }, ""); }catch(e){}
+}
+function goBack(){
+  if(navDepth > 0){ history.back(); return; }
+  // 기록이 없으면(링크로 바로 들어온 경우 등) 첫 화면으로 갑니다.
+  go("intro");
+}
+// 참가자 정보 없이 열 수 있는 화면
+const OPEN_SCREENS = ["intro","login","why","profile","calcIntro"];
+window.addEventListener("popstate", e=>{
+  const st = e.state || { screen:"intro", depth:0 };
+  navDepth = st.depth || 0;
+  let sc = VIEWS[st.screen] ? st.screen : "intro";
+  // 로그아웃한 뒤 뒤로 가기로 기록 화면에 들어가지 않도록 합니다.
+  if(!OPEN_SCREENS.includes(sc) && !(S.profile && S.profile.name)) sc = "intro";
+  closeModal();
+  S.screen = sc;
+  if(st.step !== undefined) S.wizardStep = st.step;
+  delete S.authMsg; save(); render(); window.scrollTo({top:0,behavior:"instant"});
+});
 
 function syncFooterTools(){
   const tools = $("#footTools");
@@ -2598,12 +2636,12 @@ document.addEventListener("click", e => {
     S.answers[id] = cur; save(); render(); return;
   }
   if(t.hasAttribute("data-calcnext")){
-    if(S.wizardStep < SECTOR_KEYS.length-1){ S.wizardStep++; save(); render(); window.scrollTo({top:0}); }
+    if(S.wizardStep < SECTOR_KEYS.length-1){ S.wizardStep++; navPush("calc", S.wizardStep); save(); render(); window.scrollTo({top:0}); }
     else { go("result"); }
     return;
   }
   if(t.hasAttribute("data-calcprev")){
-    if(S.wizardStep > 0){ S.wizardStep--; save(); render(); window.scrollTo({top:0}); }
+    if(S.wizardStep > 0){ S.wizardStep--; navPush("calc", S.wizardStep); save(); render(); window.scrollTo({top:0}); }
     else go("calcIntro");
     return;
   }
@@ -2809,6 +2847,8 @@ document.addEventListener("keydown", e=>{
 });
 
 load();
+try{ history.replaceState({ screen:"intro", step:0, depth:0 }, ""); }catch(e){}
+document.getElementById("railBack").addEventListener("click", goBack);
 render();
 </script>
 </body>
